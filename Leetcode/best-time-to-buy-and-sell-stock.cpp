@@ -1,3 +1,6 @@
+//Same as maximum subarray problem, just calculate the change of values in a vector
+//Ref : maximum-subarray.cpp
+//O(n)
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
