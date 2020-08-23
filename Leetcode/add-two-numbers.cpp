@@ -30,3 +30,5 @@ public:
         return  head->next;
     }
 };
+//Heh heh boy we are smart we write clean short code 
+//FAANG aint daddy boys
