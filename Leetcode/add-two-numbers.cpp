@@ -1,5 +1,5 @@
 //Just traverse and add and push to answer linked list
-//Edge Cases [5,0],[5,0] - both traverse nullpointer but you have carry to push in answer linked list
+//Edge Cases [5],[5] - both traverse nullpointer but you have carry to push in answer linked list
 //O(max(m,n)) - Linear Complexity
 //There is a stupid loop, we cant initiate without a value and we cant have value if we dont initiate. Just discard the first node (:P)
 /**
