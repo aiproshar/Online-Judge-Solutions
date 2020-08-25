@@ -1,6 +1,8 @@
 //Algorith : Kadane's Algorith for O(1) Solution
 //Brute Force : O(n^2) solution, Returns global optimum 
 //Back to back SWE explanation : https://www.youtube.com/watch?v=2MmGzdiKR9Y
+#include<bits/stdc++.h>
+using namespace std;
 class Solution {
 public:
     int maxSubArray(vector<int>& nums) {
