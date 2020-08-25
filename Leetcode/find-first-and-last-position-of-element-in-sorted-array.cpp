@@ -1,15 +1,15 @@
 //Although seems easy, not easy at all, linear time complexity not allowed
 //You have to find both first and last element with binary search (good luck traversing the array with O(n))
-//null and single element vectors allowed, handeled by hard code
+//null and single element vectors allowed, handled by hard code
 //Other Edge Case : Whole array Target
 //Two different fuction for start and end postion finding (Messed up while generalizing)
 //Its Always mid implementation _________--------________ imagine the high section is your target(s), if mid hits there 
 //you want to relocate start if you willing to find end(start may have already crossed start point but we must be carefull swapping end)
-//same goes for finding end, move start pointer (vice versa)
+//Same goes for finding end, move start pointer (vice versa)
 //Errichto Explanation : https://www.youtube.com/watch?v=dVXy6hmE_0U
 //Nick White Explanation : https://www.youtube.com/watch?v=bU-q1OJ0KWw
-//** Make Code redable and easy to understand, dont be a jerk by writing 10-20 lines of code
-//Yeah i knowtwo search functions have 1 line of difference, i am just lazy to write single function
+//** Make Code readable and easy to understand, dont be a jerk by writing 10-20 lines of code
+//Yeah i know two search functions have 1 line of difference, i am just lazy to write single function
 
 class Search
 {
