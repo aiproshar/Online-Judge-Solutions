@@ -127,5 +127,3 @@ int main()
     }
     return 0;
 }
-
-//To get from f6 to f6 takes 0 knight moves.
