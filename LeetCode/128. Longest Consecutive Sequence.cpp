@@ -1,10 +1,11 @@
-//My Ever first Hard LeetCode problem, well didn't feel that hard at all
+//My Ever first Hard LeetCode problem, well didn't felt that hard at all
 //O(n), so no sorting or greedy approach acceptable
 //We can use hashMap for linear time acces without sorting
 //Dynamic approach : If 2-3-4-5 are consecutive, we can explore both left and right and return the value
 //And mark elements that are grouped, so we dont start searching them again
-//C++ doesn't have Python defaultdict, so we use find and compare with end to check key existence (stackover confused me -rep)
+//C++ doesn't have Python defaultdict, so we use map.find() and compare with map.end() to check key existence (stackover confused me -rep)
 //THe is something called disjoint union set or something. IDK what is that maybe similar or i accidentally implemented it who knows !
+//Similarity with Kadane's algorithm, looks greedy but also dp behaviour
 //The Beauty of OOP and reusable code BABY!
 class Helper
 {
