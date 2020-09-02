@@ -1,6 +1,7 @@
 //Problem is just a simple MST, but i felt the implementation HARD
-//Prehaps i was thinking too out of scope
+//Kruskal's because constrain are small, although complete graph
 //Main problem is ID_tagging a node from 2d to 1d. And its 2D float, not integer
+//+ The Graph is complete. So after ID tagging new inserted vertex we have to iterate through previous all vetices and create edges ( complete Graph)
 //Pre_Hash to map 2D float into 1D integer (I felt this one Hardest, implemented string hashing which failed, then learned 2D key of STL:map)
 //Unordered map doesn't work, you have to overload hash function based on custom key data type
 //If you are not familiar with OOP best of luck scrolling down!
@@ -10,7 +11,7 @@ using namespace std;
 #define READ freopen("in.txt", "r", stdin)
 #define WRITE freopen("out.txt", "w", stdout)
 //-------------------------------------------------------------------------
-class Pre_Hash
+class Pre_Hash                     //Helper Pre_Hash method, 2D(float)->1D integer ID
 {
     int obj_id = 0;
 public:
@@ -25,11 +26,12 @@ public:
         return mp[make_pair(x,y)];
     }
 };
-class Graph: public Pre_Hash
+
+class Graph: public Pre_Hash        
 {
 public:
-    priority_queue<pair<double, pair<int, int>>> PQ;
-    vector<pair<double, double> > co_ordinates; 
+    priority_queue<pair<double, pair<int, int>>> PQ;    //Stores all edges in a heap, with source(pre_hashed) and destination(pre_hashed)
+    vector<pair<double, double> > co_ordinates;         //We also need to save the original 2D co-ordinated to calculate weight while traversing
     void insert_edge(double x, double y)
     {
         Pre_Hash::insert(x,y);
@@ -42,10 +44,12 @@ public:
         }
     }
 };
-class Disjoint: public Pre_Hash
+
+class Disjoint: public Pre_Hash         //Inherited pre_hash class as we wanted to work DSU independently as helper to MST
 {
 public:
-    unordered_map<int, int> parent;
+    unordered_map<int, int> parent;     //sketchy buzzwordy people will say, hey whats unordered map ? Its just a map
+                                        //How funny people uses std::map<> never knowing what RBT and HT is, and why HT is amortized O(1)
     void initialize_vertex(double x, double y)
     {
         Pre_Hash::insert(x, y);
@@ -63,6 +67,7 @@ public:
         parent[find_representative(a)] = parent[find_representative(b)];
     }
 };
+
 float MST(Graph &G, Disjoint &D, int n_V)
 {
     int mst_size = 0;
@@ -74,12 +79,13 @@ float MST(Graph &G, Disjoint &D, int n_V)
         int representative_u =  D.find_representative(top_edge.second.first);
         int representative_v = D.find_representative(top_edge.second.second);
         if(representative_u == representative_v)continue;
-        D.Union(representative_u, representative_v);
+        D.Union(representative_u, representative_v);                           
         cost += top_edge.first * -1;
         mst_size++;
     }
     return cost;
 }
+
 int main()
 {
     //READ;
