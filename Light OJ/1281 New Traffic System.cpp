@@ -9,7 +9,7 @@
 //Thats why distance matrix is 2d (caching all the possibilities)
 //If we find better path later, we update cache
 //An Edge might remain undiscovered in distance array for [0],[1],... but might get discovered later
-//If the distance array for destination using any number of allowed array is INF, there is no path
+//If the distance array for destination using none-to-max_allowed proposed node is INF, there is no path
 //Its all about state, we can have one candidate node more than once in queue with different states :) 
 
 #define READ                freopen("in.txt","r",stdin)
