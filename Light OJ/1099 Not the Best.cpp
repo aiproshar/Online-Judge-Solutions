@@ -61,17 +61,17 @@ int Dijkstra(Graph &G, int source)
             }
         }
     }
-    int back_track = G.V - 1;
+    int back_traverse = G.V - 1;
     int second_best_penalty = INF;
     //Traverse from destination to source, check for shortest vs second_shortest  per node and pick the smallest difference (penalty)
     while(1)
     {
-        if( (second_best[back_track] - distance[back_track]) < second_best_penalty)
+        if( (second_best[back_traverse] - distance[back_traverse]) < second_best_penalty)
         {
-            second_best_penalty = second_best[back_track] - distance[back_track];
+            second_best_penalty = second_best[back_traverse] - distance[back_traverse];
         }
-        back_track = parent[back_track];
-        if(back_track == -1)
+        back_traverse = parent[back_traverse];
+        if(back_traverse == -1)
             break;
     }
     return distance[G.V - 1] + second_best_penalty;
