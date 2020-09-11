@@ -1,13 +1,13 @@
 //Basic Bellman Ford
 //Negative cycle Detection
 //Directed Graph
-//In undirected graph, any single negative edge will make a negative cycle (hopping)
+//In undirected graph, any single negative edge will make a negative cycle (hopping -ve edge)
 //If there is no cycle, all nodes relaxation saturates in n-1 runs
 //prove in MIT 6006 OCW : https://www.youtube.com/watch?v=ozsuci5pIso
-// All edges(E) try to relax every vertex(V), O(VE), for complete graph O(V^3)
+//All edges(E) try to relax every vertex(V), O(VE), for complete graph O(V^3)
 //Bellman ford is essentially a non-greedy version of dijkstra, if dijkstra finds a -ve cycle
-//it might remain busy with that the whole time, so we cant be sure when  relaxation saturates
-//Bellman being non-greedy, it saturates. If saturation doesn't stops , then there's a -ve cycle
+//it might remain busy with that the whole time, so we cant be sure when relaxation saturates
+//Bellman being non-greedy, it saturates. If saturation doesn't stops, then there's a -ve cycle
 //Bellman does same thing like dijkstra (worst complexity), but it can detect when something is wrong (-ve cycle)
 #define READ    freopen("in.txt", "r", stdin)
 #define WRITE   freopen("out.txt", "w", stdout)
