@@ -3,7 +3,7 @@
 //Directed Graph
 //In undirected graph, any single negative edge will make a negative cycle (hopping -ve edge)
 //If there is no cycle, all nodes relaxation saturates in n-1 runs
-//prove in MIT 6006 OCW : https://www.youtube.com/watch?v=ozsuci5pIso
+//proof in MIT 6006 OCW : https://www.youtube.com/watch?v=ozsuci5pIso
 //All edges(E) try to relax every vertex(V), O(VE), for complete graph O(V^3)
 //Bellman ford is essentially a non-greedy version of dijkstra, if dijkstra finds a -ve cycle
 //it might remain busy with that the whole time, so we cant be sure when relaxation saturates
@@ -57,7 +57,7 @@ bool Bellman_Ford(const Graph &G, int source = 0)
             }
         }
     }
-    for (int i = 0; i < G.V; i++)           //If we can relax further, there at least a cycle exist
+    for (int i = 0; i < G.V; i++)           //If we can relax further, there at least a -ve cycle exist
     {
         for (int j = 0; j < G.cost[i].size(); j++)
         {
@@ -91,7 +91,6 @@ int main()
             cin >> x >> y >> weight;
             G.insert_edge(x, y, weight);
         }
-
         bool neg_cycle = Bellman_Ford(G);
         if(neg_cycle)
             cout << "possible"<<endl;
