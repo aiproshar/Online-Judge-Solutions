@@ -1,5 +1,5 @@
-//My Ever first Hard LeetCode problem, well didn't felt that hard at all
-//O(n), so no sorting or greedy approach acceptable
+//My Ever first Hard LeetCode problem, well didn't feel that hard at all
+//O(n) constrain, so no sorting or greedy approach acceptable
 //We can use hashMap for linear time acces without sorting
 //Dynamic approach : If 2-3-4-5 are consecutive, we can explore both left and right and return the value
 //And mark elements that are grouped, so we dont start searching them again
