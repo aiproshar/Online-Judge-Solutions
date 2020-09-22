@@ -13,7 +13,7 @@
 //Trivial Recursive Approach
 //Optimization using reference
 //Not efficient to copy vector twice in each recursive call, so use reference
-// Back to Back SWE explanation : https://www.youtube.com/watch?v=BHB0B1jFKQc
+//Back to Back SWE explanation : https://www.youtube.com/watch?v=BHB0B1jFKQc
 
 class Solution {
 public:
@@ -48,6 +48,7 @@ public:
 //Follow Up Question
 //No call stack for easy policy management and state transfer
 //Stack to mimic call stack behaviour, rst push then lst push
+//So when we pop lst comes first :) 
 
 class Solution {
 public:
