@@ -11,34 +11,28 @@
  */
 
 //Trivial Recursive Approach
-//Optimization using reference
-//Not efficient to copy vector twice in each recursive call, so use reference
+//Not efficient to copy vector twice in each recursive call, so use member variable
 //Back to Back SWE explanation : https://www.youtube.com/watch?v=BHB0B1jFKQc
 
 class Solution {
 public:
     vector<int>ans;
-    vector<int>& traverse(TreeNode* root, vector<int>& ans)
+    void traverse(TreeNode* root)
     {
-        if(root != nullptr)
+        ans.push_back(root->val);
+
+        if(root->left != nullptr)
         {
-            ans.push_back(root->val);
+            traverse(root->left);
         }
-        else
+        
+        if(root->right != nullptr)
         {
-            return ans;
+            traverse(root->right);
         }
-        if (root->left != nullptr)
-        {
-            preorderTraversal(root->left);
-        }
-        if (root->right != nullptr)
-        {
-            preorderTraversal(root->right);
-        }
-        return ans;
     }
     vector<int> preorderTraversal(TreeNode* root) {
+        if(root == nullptr) return ans;
         traverse(root, ans);
         return ans;
     }
