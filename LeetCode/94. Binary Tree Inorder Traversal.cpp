@@ -11,6 +11,8 @@
  */
 
 //Trivial Recursive Solution
+//Common member variable, smaller call stack overhead
+//Back to Back SWE explanation : https://www.youtube.com/watch?v=BHB0B1jFKQc
 class Solution {
 public:
     vector<int> ans;
@@ -36,3 +38,34 @@ public:
 };
 
 //Iterative Solution
+//Follow Up Question
+//No call stack for easy policy management and state transfer
+//Stack to mimic call stack behaviour, rst push then lst push
+//So when we pop lst comes first :) 
+//Explanation : https://www.youtube.com/watch?v=nzmtCFNae9k 
+
+class Solution {
+public:
+    vector<int> ans;
+    
+    vector<int> inorderTraversal(TreeNode* root) {
+        stack<TreeNode*> s;
+        while(1)
+        {
+            if(root != nullptr)
+            {
+                s.push(root);
+                root = root->left;
+            }
+            else
+            {
+                if(s.empty()) break;
+                root = s.top();
+                s.pop();
+                ans.push_back(root->val);
+                root = root->right;
+            }
+        }
+        return ans;
+    }
+};

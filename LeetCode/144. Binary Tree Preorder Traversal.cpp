@@ -33,7 +33,7 @@ public:
     }
     vector<int> preorderTraversal(TreeNode* root) {
         if(root == nullptr) return ans;
-        traverse(root, ans);
+        traverse(root);
         return ans;
     }
 };
