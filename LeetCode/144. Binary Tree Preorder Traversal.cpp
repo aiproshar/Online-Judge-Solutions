@@ -41,9 +41,10 @@ public:
 //Iterative Approach
 //Follow Up Question
 //No call stack for easy policy management and state transfer
-//Stack to mimic call stack behaviour, rst push then lst push
-//So when we pop lst comes first :) 
-
+//Stack to mimic call stack behaviour
+//Go LST until nullptr
+//Stack top as root
+//Go RST
 class Solution {
 public:
     vector<int>ans;
