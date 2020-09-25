@@ -9,44 +9,43 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+//Optimized Solution - 4ms
+//My First Solution was stupid, took 60 ms and 23 MB
+//BFS but modified
+//We only need level data, not parent
+//Explore all modes of same level in one go, use size of queue to trace elements of same level
+//Repeat and explore next levels until queue is empty
+//Optimized solution from sample submission
 class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
-        unordered_map<TreeNode*, int>  level;
-        unordered_map<TreeNode*, TreeNode*>  parent;
-        vector<vector<int> > ans(10000,vector<int>{});
+        
+        vector<vector<int> > ans;
         queue<TreeNode*> Q;
+        
         if(root != nullptr)
         {
             Q.push(root);
-            level[root] = 0;
-            ans[level[root]].push_back(root->val);
         }
         while(!Q.empty())
         {
-            auto node = Q.front();
-            Q.pop();
-            if(node->left != nullptr)
+            int current_level_size = Q.size();
+            vector<int>current_level;
+            while(current_level_size--)
             {
-                Q.push(node->left);
-                parent[node->left] = node;
-                level[node->left] = level[node] + 1;
-                ans[level[node->left]].push_back(node->left->val);
+                auto node = Q.front();
+                current_level.push_back(node->val);
+                Q.pop();
+                if(node->left != nullptr)
+                {
+                    Q.push(node->left);
+                }
+                if(node->right != nullptr)
+                {
+                    Q.push(node->right);
+                }
             }
-            if(node->right != nullptr)
-            {
-                Q.push(node->right);
-                parent[node->right] = node;
-                level[node->right] = level[node] + 1;
-                ans[level[node->right]].push_back(node->right->val);
-            }
-        }
-        while(ans.size() > 0)
-        {
-            if(ans[ans.size() - 1] == vector<int>{})
-                ans.pop_back();
-            else
-                break;
+            ans.push_back(current_level);
         }
         return ans;
     }
