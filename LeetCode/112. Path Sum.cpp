@@ -9,6 +9,9 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+//Traverse, and if we are in leaf node check if our path sum matches sum
+//return the logical or of lst and rst sum
+//bottom up approach
 class Solution {
 public:
     bool ans = false;
@@ -33,4 +36,16 @@ public:
             return lst || rst;
         }
     }
+};
+
+//Some crackhead written 2 line solution in discussion
+//Almost same as mine, he is just subtracting sum and trying to make it zero
+//if somehow in any leaf sum is zero bottom up true 
+class Solution {
+public:
+    bool hasPathSum(TreeNode *root, int sum) {
+            if (root == NULL) return false;
+            if (root->val == sum && root->left ==  NULL && root->right == NULL) return true;
+            return hasPathSum(root->left, sum-root->val) || hasPathSum(root->right, sum-root->val);
+        }
 };
