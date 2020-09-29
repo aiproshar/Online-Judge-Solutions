@@ -43,7 +43,7 @@ public:
 //Iterative solution - no call stack
 //own stack, just pop first two elements and check their symmetry
 //Insert their childs in symmetric manner (first.lst--second.rst--first.rst--second.lst)
-//Insert loop twice for loop invariant
+//Insert root twice initially for loop invariant
 class Solution {
 public:
     stack<TreeNode*> s;
