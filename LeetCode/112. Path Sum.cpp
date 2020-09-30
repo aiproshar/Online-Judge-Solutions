@@ -10,8 +10,9 @@
  * };
  */
 //Traverse, and if we are in leaf node check if our path sum matches sum
-//return the logical or of lst and rst sum
 //bottom up approach
+//bottom up boolean, if we got a match(true) or not(false)
+//Return logical OR of RST and LST, because we need just one match in any path
 class Solution {
 public:
     bool ans = false;
