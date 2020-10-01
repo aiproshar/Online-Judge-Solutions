@@ -16,13 +16,13 @@
 //Split postorder based on size of splitted list
 //In summary, 
 //1. Find root from postorder (last element)
-//2. Find root in inorder, all the elements in left of root belongs to LST and on right belongs to RST
-//3. Split the inorder into two list, start.....before root(LST) and after root.....end(RST)
-//4. On postorder root is the last element, so split t based on the split size of inorder list
+//2. Find root in inorder (linear scan root-> val compare), all the elements in left of root belongs to LST and on right belongs to RST (inorder : LST-ROOT-RST)
+//3. Split the inorder into two list, start.....before_root(LST) and after_root.....end(RST)
+//4. On postorder root is the last element, so ignore last element and split postorder based on the split size of inorder list (size of LST or RST elemets always same whatever traversal list it is)
 //5. Recurse on LST and RST
 //Check if list is empty(no element on that subtree), return nullptr
 //Solution is not optimal, because vector copy overhead. (bad runtime + excessive memory usage)
-//Better if we define our own function and just send the start, end location of vectors (slicing behaviour)
+//More optimal SOlution: Better if we define our own function and just pass the start, end location of vectors in call stack(slicing behaviour like NumPy)
 class Solution {
 public:
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
