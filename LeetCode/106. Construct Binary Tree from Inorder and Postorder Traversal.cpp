@@ -11,17 +11,17 @@
  */
 //Straight-forward recursive solution
 //To rebuild tree we need two data : root and elemets in LST ans RST
-//From postorder/preorder we can find root
-//After finding root from inorder we can find the elements of RST and LST, by spliting the scanning root value (no duplicates precondition)
-//Split postorder based on size of splitted list
+//From postorder/preorder we can find root->val (last/first list element)
+//After finding root->val, we can split the inorder list into two parts ( [...] root->val [...] )
+//Split postorder list to LST / RST based on size of splitted inorder list 
 //In summary, 
-//1. Find root from postorder (last element)
-//2. Find root in inorder (linear scan root-> val compare), all the elements in left of root belongs to LST and on right belongs to RST (inorder : LST-ROOT-RST)
-//3. Split the inorder into two list, start.....before_root(LST) and after_root.....end(RST)
+//1. Find root->val from postorder (last element)
+//2. Find root->val in inorder (linear scan root->val compare), all the elements in left of root->val belongs to LST and on right belongs to RST
+//3. Split the inorder into two list, start.....before_root->val(LST) and after_root->val.....end(RST)
 //4. On postorder root is the last element, so ignore last element and split postorder based on the split size of inorder list (size of LST or RST elemets always same whatever traversal list it is)
 //5. Recurse on LST and RST
 //Check if list is empty(no element on that subtree), return nullptr
-//Solution is not optimal, because vector copy overhead. (bad runtime + excessive memory usage)
+//Solution is not optimal(theory ok, bad implementation), because vector copy overhead. (bad runtime + excessive memory usage)
 //Jenny mams explanation: https://www.youtube.com/watch?v=s5XRtcud35E
 //More optimal Solution: Better if we define our own function and just pass the start, end location of vectors in call stack(slicing behaviour like NumPy)
 class Solution {
@@ -54,9 +54,11 @@ public:
 //Optimized Solution
 //No call stack vector copy overhead
 //Just keep track of index
-//Class Space copy inorder and postorder list, so accesable from any call stack
-//We need size information for end offset (start + sz - 1)
+//Class memeber inorder and postorder list copy, so accesable from any call stack
+//We need size information for end offset (start + sz - 1) //first forloop in first solution
 //First solution : 240ms/162 MB, optimized solution: 28 ms, 27 MB (10x improvement)
+//Similarity with NumPy slice, we dont copy or split or modity actual list
+//We just select sublist by passing index values (no copy overhead)
 class Solution {
     vector<int> inorder;
     vector<int> postorder;
