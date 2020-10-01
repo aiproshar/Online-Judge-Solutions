@@ -22,7 +22,7 @@
 //5. Recurse on LST and RST
 //Check if list is empty(no element on that subtree), return nullptr
 //Solution is not optimal, because vector copy overhead. (bad runtime + excessive memory usage)
-//More optimal SOlution: Better if we define our own function and just pass the start, end location of vectors in call stack(slicing behaviour like NumPy)
+//More optimal Solution: Better if we define our own function and just pass the start, end location of vectors in call stack(slicing behaviour like NumPy)
 class Solution {
 public:
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
