@@ -49,4 +49,36 @@ public:
 
 //Follow up Question
 //Can you solve it with constant space ?
-//
+//The Solution is intuitive using constant space, kinda hard to describe without images but lets give it a try
+//           O
+//          / \
+//         /   \
+//        O-->--O-->x //upper level (parent and uncle)
+//       / \   / \
+//      /   \ /   \
+//     O-->-O O-->-O  //current level (siblings and cousins)
+//its easy to create link between siblings, but for cousins we should go to upper layer
+//we dont need to traverse back all the way to root, because we can find the uncle from the next pointer from parent
+//So, right child next pointer to cousin, find cousin through parent next (parent->next is uncle)
+//next pointer default constructor sets to nullptr, required by our algorithm
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(!root)
+            return nullptr;
+        Node* level = root;
+        while(level->left)
+        {
+            Node* parent = level;
+            while(parent)
+            {
+                parent->left->next = parent->right;               //siblings relation
+                if(parent->next)                                  //check if we have uncle or not
+                    parent->right->next = parent->next->left;     //cousins relation, relation found through uncle(uncle == parent->next);
+                parent = parent->next;                            //current parent is done(all relation of his childs established), loop invariant to uncle
+            }
+            level = level->left;                                  //Next level, starting from left most node (childs are parent)
+        }
+        return root;     
+    }
+};
