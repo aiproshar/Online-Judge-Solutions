@@ -17,6 +17,9 @@
 //Beats 94%
 //Iterative version might be asked as follow up
 //Will try to do it later :)
+//Back to Back SWE explanation: https://www.youtube.com/watch?v=suj1ro8TIVY
+//My implementation differs form B2B SWE, in deserialization
+//Using index reference passing in much more efficient
 class Codec {
 public:
     // Encodes a tree to a single string.
