@@ -12,6 +12,7 @@
 //Recursive Solution
 //In order traversal
 //More optimization can be made by setting Flags (we got answer that its not BST, abort further recursion)
+//O(n)time complexity, O(n) space complexity (skewed tree call stack size)
 class Solution {
     vector<int> list;
 public:
@@ -39,6 +40,7 @@ public:
 //Iterative inorder traversal
 //No call stack overhead
 //Ref: {94. Binary Tree Inorder Traversal}
+//O(n)time complexity, O(n) space complexity
 class Solution {
     vector<int> list;
 public:
@@ -75,3 +77,9 @@ public:
         }
     }
 };
+//Follow up
+//Can you do it with constant space
+//We can solve in constant space both recursively and iteratively
+//Just save the last traversed value
+//When we got new value, just compare
+//Update last traverse value
