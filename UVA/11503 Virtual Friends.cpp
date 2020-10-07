@@ -1,7 +1,7 @@
 //DSU variation, Advanced with tight TL constrain
 //REF : UVA 459
 //Update number_of_followers in the fly (while doing union)
-//Memorization Technique to update follower (of a representative) in constant time
+//Memoization Technique to update follower (of a representative) in constant time
 
 
 #include <bits/stdc++.h>
@@ -38,7 +38,7 @@ class Disjoint
         //Its necessary to update followers before we change representative. Cause if we update the representtatives first, we double count added elements; n(b) = n(b) + n(b) //as rep(a is now b)
         //preety-printers saved at least couple of hours of Debugging (+ rep) 
         //If we transfer b->rep  from representative node to follower of a->rep [union(a,b)], we increase the followers of a->rep by the follower count of b->rep :) 
-        //On the Fly O(1) update; with 2 helper memorization (maybe dp idk) techniques, one for path compression, other for follower update                                                                                                    
+        //On the Fly O(1) update; with 2 helper memoization, one for path compression, other for follower update                                                                                                 
         representative[find_representative(a)] = find_representative(b);
     }                                                                                                           
 
