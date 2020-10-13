@@ -43,8 +43,9 @@ public:
 //No call stack for easy policy management and state transfer
 //Stack to mimic call stack behaviour
 //Go LST until nullptr
-//Stack top as root
+//Stack top as root (left child is nullptr)
 //Go RST
+//If RST nullptr, we will pop neext item from stack
 class Solution {
 public:
     vector<int>ans;
