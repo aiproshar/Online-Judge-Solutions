@@ -40,8 +40,6 @@ public:
 //Iterative Solution
 //Follow Up Question
 //No call stack for easy policy management and state transfer
-//Stack to mimic call stack behaviour, rst push then lst push
-//So when we pop lst comes first :) 
 //Explanation : https://www.youtube.com/watch?v=nzmtCFNae9k 
 
 class Solution {
