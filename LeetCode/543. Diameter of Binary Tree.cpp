@@ -9,12 +9,12 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-//Diametr is the longest path betwen two nodes
+//Diameter is the longest path betwen two nodes{from all nodes}
 //Bottom up approach
-//DFS to find depth of lst and rst and comparing if the diameter of that three is max or not
-//If max we found new global max lst + lst traverse depth, means diameter
+//DFS to find depth of lst and rst, and comparing if the diameter of that subtree (path that goes via that root) is max or not
+//If max we found new max, means its diameter of current explored subtrees. Expand the subtree space to find global max
 //No separate stack for DFS, call stack DFS implementation
-//Update Max Length (diameter) as we return back to root
+//Update Max Length (diameter) as we return back to root (subtree search space expansion, compare with previous best and update)
 class Solution {
 public:
     int diameter = 0;
