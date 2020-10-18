@@ -1,4 +1,4 @@
-//Algorith : Kadane's Algorith for O(1) Solution
+//Algorith : Kadane's Algorith for O(n) Solution
 //Brute Force : O(n^2) solution, Returns global optimum 
 //Kind of DP + Greedy Behavior. Dp stores greedy's local optimum, greedy extends gradually to global space by extending local space
 //Back to back SWE explanation : https://www.youtube.com/watch?v=2MmGzdiKR9Y
