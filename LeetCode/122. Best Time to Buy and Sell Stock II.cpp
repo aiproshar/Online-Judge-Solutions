@@ -1,6 +1,6 @@
-//Just calculate changes and add the profits, we have freedom to buy abd sell as many times as we want
-//no algorithm, just implementation
-//O(n)
+//Just calculate changes and add the profits, we have freedom to buy and sell as many times as we want
+//no algorithm, just implementation. Linear scan and add profits
+//O(n) time complexity, O(1) space complexity
 
 class Solution {
 public:
