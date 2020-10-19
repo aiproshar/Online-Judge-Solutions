@@ -30,6 +30,7 @@ public:
 //Similarity with Kadane's algorithm {121.Best time to buy and sell stock}
 //Optimal in local, increase local space
 //When we are in global, now we have solution for global space
+//Read the solution in leetcode, its public and describes 4 methods briefly
 class Solution {
 public:
     bool canJump(vector<int>& nums) {
