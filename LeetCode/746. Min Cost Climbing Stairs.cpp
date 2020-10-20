@@ -3,6 +3,7 @@
 //O(n) time complexity, O(n) space complexity
 //Problem statement is not clear for first example, refer to 
 //discusion to clearly understand the problem statement
+//4 ms runtime, beats 99%
 class Solution {
 public:
     int minCostClimbingStairs(vector<int>& cost) {
