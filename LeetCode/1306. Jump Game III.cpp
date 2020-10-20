@@ -1,6 +1,6 @@
 //Basic BFS
 //Memoization to mark if a node is visited or not (yeah saves us from infinite loop too)
-//First check if our jumps positions are valid or not, push the valid jump positions
+//First check if our jumps positions are valid or not, push the valid jump positions if they are not visited
 //Oww - Check first for objective, our value in that index is 0 or not
 //If we encounter any 0, break and return true, else false
 class Solution {
