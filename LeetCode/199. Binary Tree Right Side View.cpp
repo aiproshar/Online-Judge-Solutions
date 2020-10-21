@@ -13,7 +13,7 @@
 //DFS, recursive method, inorder traversal (RST first)
 //Root, RST, LST
 //At each depth we look up do we have the right side view element in that depth ?
-//If true push to list, update current max depth
+//If we dont have right side view element at that depth,  push to list, update current max depth
 //O(n) time complexity, O(n) space complexity 
 class Solution {
 public:
