@@ -30,6 +30,8 @@ public:
 //Using map{RBT} (O(lgN)) also gets TLE, so vector is only option
 //Cannot use unordered_map(no hash function for pair :( ))
 //Errichto Description : https://www.youtube.com/watch?v=KJWAQVmuFW0 
+//O(mn) runtime complexity, O(mn) for memoization + O(min(m,n)) for call stack
+//Minimum cause it will bottom out as null string "", so we return immediately (l1 < 0 || l2 < 0)
 class Solution {
     vector< vector<int> > v{1001, vector<int>(1001, -1)};
     string text1, text2;
@@ -62,6 +64,7 @@ public:
 //WHen no match, pick max from {(i,j-1), (i-1,j)} -> similar what recursion does in else block
 //Back to Back SWE explanation: https://www.youtube.com/watch?v=ASoaQq66foQ
 //Back to Back SWE, Hats off brother. You are the best!
+//O(mn) runtime and memory complexity
 class Solution {
 public:
     int longestCommonSubsequence(string text1, string text2) {
@@ -84,3 +87,20 @@ public:
         return dp[text1.size()][text2.size()];
     }
 };
+//More memory optimization can be possible
+//We only need the previous row to compute current row
+//So in that scenario memory complexity will min(m,n)
+//min(m,n) -> shortest string in horizontal      "" 's' 'h' 'o' 'r' 't'
+//                                           " "
+//                                           'l'
+//                                           'o'
+//                                           'n'
+//                                           'g'
+//                                           'e'
+//                                           'r'
+//                                           's'
+//                                           't'
+//                                           'r'
+//                                           'i'
+//                                           'n'
+//                                           'g'                                           
