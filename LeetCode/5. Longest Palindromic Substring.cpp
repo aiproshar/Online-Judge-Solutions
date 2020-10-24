@@ -36,3 +36,4 @@ public:
 //Other Methods : Longest common substring by reverse string comparison
 //Pick location and grow left right as long as palindrome method, constant space complexity
 //Everything is described in the solution tab
+//Errichto Multiple solution : https://www.youtube.com/watch?v=0CKUjDcUYYA 
