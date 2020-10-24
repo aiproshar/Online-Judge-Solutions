@@ -6,6 +6,7 @@
 //Same 2D dp table as LCS, just change in how we calculated new problems from previous subproblems
 //Reference: {1143.Longest Common Subsequence}
 //Reference: {1143-> explanation by B2b SWE} https://www.youtube.com/watch?v=ASoaQq66foQ 
+//O(mn) time complexity, O(mn) space complexity
 class Solution {
 public:
     int findLength(vector<int>& A, vector<int>& B) {
