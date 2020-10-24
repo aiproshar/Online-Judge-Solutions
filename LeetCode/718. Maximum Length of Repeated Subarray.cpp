@@ -3,6 +3,9 @@
 //dp table has partial similarity with longest common subsequence problem
 //Padded with '0' so base subproblem(out of bound) is zero
 //using array insted of dp improves runtime(140 ms vs 330)
+//Same 2D dp table as LCS, just change in how we calculated new problems from previous subproblems
+//Reference: {1143.Longest Common Subsequence}
+//Reference: {1143-> explanation by B2b SWE} https://www.youtube.com/watch?v=ASoaQq66foQ 
 class Solution {
 public:
     int findLength(vector<int>& A, vector<int>& B) {
