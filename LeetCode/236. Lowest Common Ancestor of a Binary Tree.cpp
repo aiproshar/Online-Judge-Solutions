@@ -8,8 +8,8 @@
  * };
  */
 //recursive approach
-//2 case,1. our current node has one value, and another in in either LST or RST
-//2. We have one in LST and another in RST
+//2 Cases,case 1: our current node has one value, and another in in either LST or RST
+//        case 2: We have one in LST and another in RST
 //termination flag for runtime optimization (if we already have ans, why recurse any more!)
 //If both values are in either LST or RST, its not an ancestor
 class Solution {
