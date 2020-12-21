@@ -1,8 +1,8 @@
-//O(n) time complexity, O(n) spzce complexity
+//O(n) time complexity, O(n) space complexity
 //Sliding window + hashtable (unordered_map)
 //Two pointer(index) method, start and end
-//Grow untl theres a duplicate, then shring from start
-//Update max and when iteration done on whole string return global max
+//Grow until there's a duplicate, then shrink from start one step
+//Update max and when iteration done on whole string max (max is now global max)
 class Solution {
 public:
     int mxSize = 0;
