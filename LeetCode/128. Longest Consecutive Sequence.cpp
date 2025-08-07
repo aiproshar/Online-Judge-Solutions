@@ -27,16 +27,12 @@ public:
     }
 };
 
-
-
-
 // FollowUP
 
-
-//Implement in linear time complexity
-// Lets try to build consecutive sequence
-// We try to grow left and right
-// We also mark elements which are part of already counted sequence
+// Implement in linear time complexity
+//  Lets try to build consecutive sequence
+//  We try to grow left and right
+//  We also mark elements which are part of already counted sequence
 
 class Solution {
 private:
@@ -68,8 +64,8 @@ public:
 
         int maxSize = 0;
         int currentSize = 0;
-        for(const auto &it: mp){
-            if(it.second == false){
+        for (const auto& it : mp) {
+            if (it.second == false) {
                 currentSize = consecSize(it.first, mp);
                 maxSize = max(maxSize, currentSize);
             }
