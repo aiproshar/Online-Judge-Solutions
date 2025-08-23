@@ -65,3 +65,35 @@ public:
         return mx;
     }
 };
+
+
+// Update using template for sliding window
+//
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+
+        unordered_map<char, uint8_t> mp;
+        mp.reserve(1000);
+
+        int mx = 0;
+
+        for(int left = 0, right = 0; right < s.size(); right++){
+
+            if(mp.find(s[right]) != mp.end()){
+                mp[s[right]]++;
+            }else{
+                mp[s[right]] = 1;
+            }
+
+            while(mp[s[right]] > 1){
+                mp[s[left]]--;
+                left++;
+            }
+
+            mx = max(mx, right-left+1);
+        }
+
+        return mx;
+    }
+};
