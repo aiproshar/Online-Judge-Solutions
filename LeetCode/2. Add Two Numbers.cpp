@@ -32,3 +32,5 @@ public:
 };
 //Heh heh boy we are smart we write clean short code 
 //FAANG aint daddy boys
+//Tried this problem again after 5 years, this time, FAANG recruiters is pushing me for an interview
+//lol, how things changed in 5 years. Life so weird
