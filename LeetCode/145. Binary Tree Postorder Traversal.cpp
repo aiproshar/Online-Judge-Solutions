@@ -111,6 +111,9 @@ public:
                 st.pop();
             } else {
 
+                //Childs are not visited, we dont check the condition of each child separately
+                //cause we push them both at the same time, even one is null or both is null
+                //Handling the null in the stack made this hell easier
                 st.emplace(top->right);
                 st.emplace(top->left);
             }
