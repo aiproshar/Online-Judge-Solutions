@@ -30,3 +30,8 @@ class Solution:
                         que.append(child_str)
 
         return 0
+
+# Time Complexity: We visit N nodes, for each nodes, we generate L*26 words  (Double for loop), so it should be L*26*M ? No, you are mistaken
+# Line: 25 -> child_str = "".join(child) -> This is another linear operation in the for loop, So in L*26*M there is another L
+# So time complexity: L^2*M (removing constant 26)
+# Space complexity: All nodes in the queue, so L*M
