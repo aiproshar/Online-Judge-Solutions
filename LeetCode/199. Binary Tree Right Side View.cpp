@@ -36,3 +36,52 @@ public:
         dfs_right_to_left(root->left, list, current_depth + 1);
     }
 };
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
+ * };
+ */
+
+ //Modified level order traversal
+ //BFS
+ //insert right child first for ride side view
+ //No recursion
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+
+        if (root == nullptr) {
+            return {};
+        }
+        vector<int> view;
+        view.reserve(100);
+        queue<TreeNode*> que;
+        que.emplace(root);
+
+        while (!que.empty()) {
+            auto current_lvl_size = que.size();
+            //Insert the very right element in the queue
+            view.emplace_back(que.front()->val);
+            while (current_lvl_size--) {
+                auto front = que.front();
+                que.pop();
+                //Insert right child first
+                if (front->right != nullptr)
+                    que.emplace(front->right);
+                if (front->left != nullptr)
+                    que.emplace(front->left);
+            }
+        }
+
+        return view;
+    }
+};

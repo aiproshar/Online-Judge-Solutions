@@ -6,47 +6,35 @@
  *     TreeNode *right;
  *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
  * };
  */
-//Optimized Solution - 4ms
-//My First Solution was stupid, took 60 ms and 23 MB
-//BFS but modified
-//We only need level data, not parent
-//Explore all nodes of same level in one go, use size of queue to count elements of same level
-//Repeat and explore next levels until queue is empty
-//Optimized solution from sample submission
 class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
-        
-        vector<vector<int> > ans;
-        queue<TreeNode*> Q;
-        
-        if(root != nullptr)
-        {
-            Q.push(root);
-        }
-        while(!Q.empty())
-        {
-            int current_level_size = Q.size();
-            vector<int>current_level;
-            while(current_level_size--)
-            {
-                auto node = Q.front();
-                current_level.push_back(node->val);
-                Q.pop();
-                if(node->left != nullptr)
-                {
-                    Q.push(node->left);
-                }
-                if(node->right != nullptr)
-                {
-                    Q.push(node->right);
-                }
+
+        if (root == nullptr)
+            return {};
+        vector<vector<int>> traversal;
+        traversal.reserve(1000);
+        int lvl = 0;
+        queue<TreeNode*> que;
+        que.emplace(root);
+        while (!que.empty()) {
+
+            int current_lvl_size = que.size();
+            traversal.push_back(vector<int>());
+            while (current_lvl_size--) {
+                auto front = que.front();
+                que.pop();
+                traversal[lvl].emplace_back(front->val);
+                if(front->left != nullptr)que.emplace(front->left);
+                if(front->right != nullptr)que.emplace(front->right);
             }
-            ans.push_back(current_level);
+            lvl++;
         }
-        return ans;
+
+        return traversal;
     }
 };
