@@ -6,6 +6,8 @@
 class Solution:
 
     def __dfs(self, source, adj_list: defaultdict(list), color: list) -> bool:
+        # Return true if we detect a cycle
+        # Return False if no cycle is detected during graph traversal
         WHITE, GREY, BLACK = 0, 1, 2
         # This is important, dont forget to put the current node into the stack
         # AKA marking as GREY
@@ -15,6 +17,8 @@ class Solution:
                 return True
             if color[child] == WHITE and self.__dfs(child, adj_list, color):
                 return True
+        # Its fully visited including its child. We are taking out of the STACK, MARKING AS BLACK
+        # SO WE DO NOT visit this crap again
         color[source] = BLACK
         return False
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
