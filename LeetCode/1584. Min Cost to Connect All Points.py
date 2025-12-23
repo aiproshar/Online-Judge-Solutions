@@ -1,3 +1,5 @@
+# This is pure MST in disguise
+# We need to construct the edges, the condition makes this a complete graph
 class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
         adj_list = defaultdict(list)
@@ -31,3 +33,5 @@ class Solution:
                     if dest_point not in visited:
                         heapq.heappush(heap, (dest_cost, next(counter), dest_point))
         return total_cost
+# Time complexity: Heap Ops E timnes ,O(ElogE) or O(N^2logN) //For complete graph E ~ N^2
+# Space complexity: O(N)
