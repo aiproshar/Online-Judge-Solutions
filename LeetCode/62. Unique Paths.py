@@ -31,7 +31,7 @@ class Solution:
 # Same as 64, just dp state table info is different
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
-        dp  = [[None for n in range(n)] for _ in range(m)]
+        dp  = [[None for _ in range(n)] for _ in range(m)]
         dp[0][0] = 1
         for i in range(m):
             for j in range(n):
@@ -41,5 +41,7 @@ class Solution:
                 left_paths = dp[i][j - 1] if j > 0 else 0
                 dp[i][j] = top_paths + left_paths
         return dp[m - 1][n - 1]
-        
+
+# Time complexity: O(M*N)
+# Space complexity: O(m*N)
         
