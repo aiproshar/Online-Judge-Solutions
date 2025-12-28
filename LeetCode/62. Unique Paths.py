@@ -26,4 +26,20 @@ class Solution:
 
 # Time complexityz: O(M*N)
 # Space Complexity: O(M*N) //Also + O(M+N) recursion depth
+
+# Iterative solution
+# Same as 64, just dp state table info is different
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        dp  = [[None for n in range(n)] for _ in range(m)]
+        dp[0][0] = 1
+        for i in range(m):
+            for j in range(n):
+                if i == 0 and j == 0:
+                    continue
+                top_paths = dp[i - 1][j] if i > 0 else 0
+                left_paths = dp[i][j - 1] if j > 0 else 0
+                dp[i][j] = top_paths + left_paths
+        return dp[m - 1][n - 1]
+        
         
