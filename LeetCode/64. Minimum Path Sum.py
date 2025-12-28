@@ -37,7 +37,8 @@ class Solution:
 # 2D basic dp table
 # Forward dp, iterative
 # some states are out of bound, as this is a minimization problem, we initiate out of bounds with INF
-# The most 
+# The most important part is realizing, all our previous state is computed which upon we can come into current state
+# Thats why we can access the dp table easily
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
         INF = float('inf')
