@@ -102,3 +102,55 @@ class Solution:
         return max_str
 
 
+# Greedy/Two pointer approach, even beats DP
+# Expand around center, every palindrome has a center (single elem for odd, two for even palindrome)
+# We pick every index and try to expand as far as we can
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        n = len(s)
+
+        p_len = 0
+        p_idx = ()
+
+        # Handling the odd palindromes
+        for idx in range(n):
+
+            i = idx
+            j = idx
+
+            while 0 <= i < n and 0 <= j < n:
+                if s[i] == s[j]:
+                    i -= 1
+                    j += 1
+                else:
+                    break
+            i += 1
+            j -= 1
+            if j - i + 1 > p_len:
+                p_len = j - i + 1
+                # Python slice goes before, not upto
+                p_idx = (i, j + 1)
+
+
+        # Handling the even palindromes
+        # Corner case : We use two char as center, so handle out of bound issues
+        for idx in range(n - 1):
+
+            i = idx
+            j = idx + 1
+
+            while 0 <= i < n and 0 <= j < n:
+                if s[i] == s[j]:
+                    i -= 1
+                    j += 1
+                else:
+                    break
+            i += 1
+            j -= 1
+            if j - i + 1 > p_len:
+                p_len = j - i + 1
+                # Python slice goes before, not upto
+                p_idx = (i, j + 1)
+        return s[p_idx[0] : p_idx[1]]
+
+                
