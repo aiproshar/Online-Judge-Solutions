@@ -65,3 +65,40 @@ class Solution:
 # TODO: We are doing useless substring copy, we really dont need that
 # Similar Problem with much cleaner solution: https://leetcode.com/problems/palindromic-substrings/submissions/1869753324/
 # 99% similar, instead of traking the longest palindrome, we count total palindromes number YaY
+
+
+
+
+
+### More Cleaner Version of previous code
+
+class Solution:
+
+    def longestPalindrome(self, s: str) -> str:
+        n = len(s)
+        dp = [[None for _ in range(n)] for _ in range(n)]
+
+        def isPalindrome(i, j) -> bool:
+            if dp[i][j] != None:
+                return dp[i][j]
+            if i >= j:
+                dp[i][j] = True
+                return dp[i][j]
+
+            if s[i] == s[j] and isPalindrome(i + 1, j - 1) is True:
+                dp[i][j] = True
+            else:
+                dp[i][j] = False
+            return dp[i][j]
+
+        max_len = 0
+        for i in range(len(s)):
+            for j in range(i, len(s)):
+                if isPalindrome(i, j) is True:
+                    if j - i + 1 > max_len:
+                        max_len = max(max_len, j - i + 1)
+                        max_str_idx = (i, j + 1)
+        max_str = s[max_str_idx[0]:max_str_idx[1]]
+        return max_str
+
+
