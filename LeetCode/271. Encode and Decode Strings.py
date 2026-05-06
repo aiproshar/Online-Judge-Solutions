@@ -28,11 +28,12 @@ class Codec:
         strs = []
         i = 0
         while i < len(s):
-            # I made a mistake not including
+            # I made a mistake not including ord(O)
+            # I initially add ord(1) - ord(9) , this introduced infinite loop on len containing zeros (10, 20,100)
             if ord("0") <= ord(s[i]) <= ord("9"):
                 # Read all consecutive digits to get the length prefix
                 # (supports multi-digit lengths like "12" for longer strings)
-                # I initially add i-9 , this introduced infinite loop on len containing zeros (10, 20,100)
+
                 str_len = s[i]
                 i += 1
                 while ord("0") <= ord(s[i]) <= ord("9"):
