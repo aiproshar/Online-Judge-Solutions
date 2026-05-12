@@ -1,0 +1,21 @@
+#clean and concise approach
+# my initial python was messy, handling a lot of edge case and all nested loops
+# Initial py solution: https://leetcode.com/problems/longest-substring-without-repeating-characters/submissions/2001103414/
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        substr = set()
+        max_len = 0
+
+        start = 0
+        end = 0
+
+        while end < len(s):
+            if s[end] not in substr:
+                substr.add(s[end])
+                end +=1
+                max_len = max(max_len, len(substr))
+            else:
+                substr.remove(s[start])
+                start+=1
+        return max_len
