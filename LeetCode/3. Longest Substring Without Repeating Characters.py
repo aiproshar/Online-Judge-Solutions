@@ -19,3 +19,34 @@ class Solution:
                 substr.remove(s[start])
                 start+=1
         return max_len
+
+'''
+
+Lets solve all two pointers with the below template
+
+
+left = 0
+for right in range(n):
+    # expand: update state with nums[right]
+
+    while window_invalid:
+        # shrink: undo state for nums[left]
+        left += 1
+    
+    # we are here means we are in a valid state
+    # update result
+
+'''
+
+def lengthOfLongestSubstring(self, s: str) -> int:
+    substr = set()
+    max_len = start = 0
+
+    for end in range(len(s)):
+        while s[end] in substr:
+            substr.discard(s[start])
+            start += 1
+        substr.add(s[end])
+        max_len = max(max_len, end - start + 1)
+
+    return max_len
