@@ -91,3 +91,37 @@ class Solution:
 # Space complexity: O(26) -> Keyspace is constant
 
 # More improvement -> use match counter, keep the freq dicts but only update the modified chars in O(1) , so we know how many match in constant time
+
+
+
+# Cleanest implementation, used claude to improve my loop invariant
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        match_count = 0
+
+        freq_t = Counter(t)
+        need = len(freq_t)
+        freq_win = defaultdict(int)
+        min_sub = None
+
+        i = 0
+        for j in range(len(s)):
+            freq_win[s[j]] += 1
+            if freq_win[s[j]] == freq_t[s[j]]:
+                match_count += 1
+
+            # Shrink phase
+            while match_count == need:
+                if min_sub == None or j - i + 1 < len(min_sub):
+                    min_sub = s[i:j + 1]
+                freq_win[s[i]] -= 1
+                if freq_win[s[i]] < freq_t[s[i]]:
+                    # this is only triggered once and no chance of repetitive reduction
+                    # Why ? because we only enter the while loop when we have a substring that match
+                    match_count -= 1
+                i += 1
+        return min_sub if min_sub is not None else ""
+
+
+
