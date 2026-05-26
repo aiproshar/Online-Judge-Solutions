@@ -31,5 +31,5 @@ class Solution:
 
         return nodes[head]
 
-# Time Complexity: O(n)
-# Space Complexity: O(n)
+# Time Complexity: O(max(m,n)
+# Space Complexity: O(max(m,n)
