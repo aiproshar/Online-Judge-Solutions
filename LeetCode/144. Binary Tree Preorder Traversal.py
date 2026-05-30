@@ -26,7 +26,8 @@ class Solution:
         rec_pre(root)
         return lst
 # Time Complexity: O(n)
-# Space Complexity: O(lgN) , call stack limitation IRL
+# Space Complexity: O(h) , call stack limitation IRL. Some say O(logN) but that's wrong, what is the tree is not balanced
+# h can be between logN -> N. lgN: Balanced Tree, N -> A skewed tree, honestly a linkedlist
 
 
 
@@ -53,4 +54,4 @@ class Solution:
                 stk.append(node.left)
         return output
 # Time Complexity: O(n)
-# Space Complexity: O(lgN) , No call stack risk here
+# Space Complexity: O(h) , No call stack risk here. h can be between logN -> N
