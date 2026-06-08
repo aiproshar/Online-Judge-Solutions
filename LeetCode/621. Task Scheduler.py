@@ -44,25 +44,27 @@ class Solution:
 # If freq is 1, we skip. By this we handle the corner case of last iteration, where we dont need IDLE time before cooldown
 # If cycle is > 0, that means the number of unique tasks is less than cycle, so we must add IDLE time
 # The catch here is calculating time complexity, its linear due to the nature of dataset
+
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
-        freq = Counter(tasks)
-        freq = [-x[1] for x in freq.items()]
-
-        heapq.heapify(freq)
-        time = 0
-        while freq:
-            cycle = n + 1
-            store = []
-            while cycle > 0 and freq:
-                top = heapq.heappop(freq) * -1
-                if top > 1:
-                    store.append(top - 1)
-                cycle -= 1
-            if store == []:
+        freq_dict = Counter(tasks)
+        heap = [-x[1] for x in freq_dict.items()]
+        heapq.heapify(heap)
+        idle = 0
+        while heap:
+            i = n + 1
+            temp = []
+            while i > 0 and heap:
+                i -= 1
+                freq = heapq.heappop(heap) * -1
+                freq -= 1
+                if freq > 0:
+                    temp.append(freq * -1)
+            # exclude trailing idles, not needed
+            if not temp:
                 break
-            if cycle != 0:
-                time += cycle
-            for item in store:
-                heapq.heappush(freq, item * -1)
-        return time + len(tasks)
+            idle += i
+            while temp:
+                heapq.heappush(heap, temp[-1])
+                temp.pop()
+        return len(tasks) + idle
