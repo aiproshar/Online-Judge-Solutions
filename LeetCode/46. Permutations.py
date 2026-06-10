@@ -1,27 +1,37 @@
+"""
+CCG Pattern -> Choices Constrain Goals
+We don't care about index, all we care is i don't want duplicate index element
+Save all used index in a set and that's enforce our constraints
+"""
 
-# such a beautiful problem
-# We are trying generate tree by positioning first element in N potition
-# Second element in N-1 position, we mark all the non occupied pos as None
-# When we reached at the end of nums, push that to list and exit (leaf node)
-# n * n-1 * n-2 * n-3 .... 2..1 -> n! leaf, in each leaft go travere the loop, so its n*n!. Actually its bit more complex, because we are also doing this in the
-# previous levels also
-# Space complexity: O(n) -> Max Depth per path, we are exploring on path at a time (dfs)
+
 class Solution:
-    def dfs(self, perm, idx):
-        if idx == len(self.nums):
-            self.allprems.append(perm[:])
-            return
-        for i in range(len(perm)):
-            if perm[i] is None:
-                perm[i] = self.nums[idx]
-                self.dfs(perm, idx + 1)
-                # undo the operation, aka backtrack
-                perm[i] = None
     def permute(self, nums: List[int]) -> List[List[int]]:
-        self.nums = nums
-        perm = [None] * len(nums)
-        self.allprems = []
-        
-        
-        self.dfs(perm, 0)
-        return self.allprems
+        perms = []
+        visited = set()
+
+        def backtrack(current=[]):
+            # Goal
+            if len(current) == len(nums):
+                perms.append(current.copy())
+                return
+            # Choices
+            for i in range(len(nums)):
+                # Constrains
+                # We dont want duplicates, thats the only constraint
+                if i in visited:
+                    continue
+                current.append(nums[i])
+                visited.add(i)
+                backtrack(current)
+                visited.discard(i)
+                current.pop()
+
+        backtrack()
+        return perms
+    # Time Complexity: Depth N -> len(nums), we have n, n-1, n-2, .. 1 choices each level
+    # So n*(n-1)*(n-2)* ...2*1 -> n! Wait, in each node we traverse all the elements to find valid index, thats n
+    # So time Complexity: O(n * n!)
+
+    # Space Complexity: DFS, so depth its O(n)
+    # Auxiliary Space: n! permutation possible, each n length, so O(n * n!)
