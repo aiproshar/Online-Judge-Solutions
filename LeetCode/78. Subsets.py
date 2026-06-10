@@ -23,7 +23,8 @@ class Solution:
             traverse(current, idx+1)
         traverse([],0)
         return subsets
-
+    # Time Complexity: O(n*2^n)
+    # Space Complexity: O(n*2^n) if we include result, if not then O(n)
 
 '''
 
@@ -43,5 +44,5 @@ class Solution:
                 current.pop()
         backtrack()
         return subsets
-    # Time Complexity: O(2^n)
-    # Space Complexity: O(n^2)
+    # Time Complexity: O(n*2^n)
+    # Space Complexity: O(n*2^n) if we include result, if not then O(n)
