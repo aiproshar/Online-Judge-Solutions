@@ -1,21 +1,10 @@
 
-# Dfs, with alookup table to the next paths
 class Solution:
-    def dfs(self, path, idx):
-        if idx == len(self.digits):
-            path_str = ''.join(path)
-            if path_str == "":
-                return
-            self.paths.append(path_str)
-            return
-        
-        for letter in self.mp[self.digits[idx]]:
-            path.append(letter)
-            self.dfs(path, idx + 1)
-            path.pop()
-        
     def letterCombinations(self, digits: str) -> List[str]:
-        self.mp = {
+        # Early Termination, corner case
+        if digits == "":
+            return []
+        keypad = {
             "2": ["a", "b", "c"],
             "3": ["d", "e", "f"],
             "4": ["g", "h", "i"],
@@ -25,10 +14,21 @@ class Solution:
             "8": ["t", "u", "v"],
             "9": ["w", "x", "y", "z"],
         }
-        self.digits = digits
-        self.paths = []
-        self.dfs([], 0)
-        return self.paths
+        res = []
+
+        def backtrack(current=[], idx=0):
+            # Goal
+            if idx == len(digits):
+                res.append("".join(current))
+                return
+            # Choices +  Constrains, we must take only from digits[idx]
+            for char in keypad[digits[idx]]:
+                current.append(char)
+                backtrack(current, idx + 1)
+                current.pop()
+
+        backtrack()
+        return res
 
 # time complexity: O(4^L), this could be 3^L but we always assume worst
 # Space complexity: Depth stack, O(L)
