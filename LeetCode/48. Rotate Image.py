@@ -30,6 +30,7 @@ class Solution:
         for i in range(len(matrix)):
             for j in range(len(matrix)):
                 # Early termination optimization, Complexity remains same
+                # We are going through lower diag
                 if j < i:
                     matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
                 else:
