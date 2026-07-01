@@ -1,33 +1,70 @@
 class Solution:
-    # Basic DFS, with cycle detection
-    # Returns True upon cycle detection
-    # Corner Case -> As this is undirected graph, one of our child will be parent
-    # We pass the parent node id, so during traversal we dont detect a false cycle
-    def __dfs(self, source, previous) -> bool:
-        for child in self.adj_list[source]:
-            if child == previous:
-                continue
-            if child in self.visited:
-                return True
-            self.visited.add(child)
-            if self.__dfs(child, source) is True:
-                return True
-        return False
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        self.adj_list = defaultdict(list)
-        for x, y in edges:
-            self.adj_list[x].append(y)
-            self.adj_list[y].append(x)
-        self.visited = {0}
-        has_cycle = self.__dfs(0, None)
+        # A graph is a valid tree if and only if:
+        #   (1) it has NO cycle, AND
+        #   (2) it is fully connected (all n nodes reachable from one start).
+        # This code checks both: cycle detection via DFS coloring,
+        # and connectivity via the visited-count check at the end.
 
-        if has_cycle is True:
+        # ---- Step 1: Build an undirected adjacency list ----
+        # Each edge [x, y] is bidirectional, so we add y to x's list
+        # AND x to y's list.
+        adj_list = defaultdict(list)
+        for x, y in edges:
+            adj_list[x].append(y)
+            adj_list[y].append(x)
+
+        # ---- Step 2: Set up bookkeeping ----
+        visited = set()                 # tracks every node we finish processing
+        WHITE, GREY, BLACK = 0, 1, 2    # node states:
+                                        #   WHITE = not yet visited
+                                        #   GREY  = currently on the DFS stack (being explored)
+                                        #   BLACK = fully explored (done)
+        color = [WHITE] * n             # all nodes start WHITE
+
+        # ---- Step 3: DFS that returns True if it finds a back-edge (cycle) ----
+        def dfs(node, parent) -> bool:
+            # Mark this node GREY: it's now "in progress" on the current path.
+            color[node] = GREY
+            visited.add(node)           # record that we've reached this node
+
+            for child in adj_list[node]:
+                # Skip the edge we just came from. In an undirected graph,
+                # the parent will always appear in the child's list, and
+                # walking straight back to it is NOT a real cycle.
+                if child == parent:
+                    continue
+
+                # If a neighbor is GREY, it's an ancestor still on our path.
+                # Reaching it again means we found a back-edge => a cycle.
+                if color[child] == GREY:
+                    return True
+
+                # If a neighbor is WHITE, it's unexplored: recurse into it.
+                # If that recursion finds a cycle, propagate True upward.
+                if color[child] == WHITE:
+                    if dfs(child, node) is True:
+                        return True
+                # (A BLACK child is already fully done and safe to ignore.)
+
+            # Finished exploring every neighbor: mark this node BLACK (done).
+            color[node] = BLACK
+            return False                # no cycle found in this subtree
+
+        # ---- Step 4: Run DFS from node 0 ----
+        # If DFS reports a cycle, it can't be a tree.
+        if dfs(0, None) is True:
             return False
-        # Edge Case: Forest. Multiple Tree or other disconnected graphs can be present
-        # For a undirected tree all nodes will be explored during dfs/bfs
-        if len(self.visited) != n:
+
+        # ---- Step 5: Connectivity check ----
+        # A single DFS from node 0 reaches every node ONLY if the graph is
+        # connected. If some node was never visited, the graph is split into
+        # pieces (a forest, not a tree), so it's invalid.
+        if len(visited) != n:
             return False
+
+        # Passed both checks: no cycle AND fully connected => valid tree.
         return True
 
-        # Time Complexity: All Vertex And Their Edges, once. So O(V+E)
-        # Space Complexity: O(V) -> Tree is a linked list, so max depth is all nodes, but also O(V+E) for adj list
+# Time Complexity: O(V+E)
+# Space: O(V+E)
