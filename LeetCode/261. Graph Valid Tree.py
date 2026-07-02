@@ -68,3 +68,51 @@ class Solution:
 
 # Time Complexity: O(V+E)
 # Space: O(V+E)
+
+
+
+
+'''
+BFS based implementation, so clean. No stack overflow risk
+Same here, for an undirected graph, we must not return back to parent. Need a explicit parent dict
+Parent dict also doubles as visited dict
+
+3 Corner Case:
+- Sparse Graph -> 
+'''
+class Solution:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+
+        # Early termination:
+        if len(edges) != n - 1:
+            return False
+
+        adj_list = defaultdict(list)
+        for x, y in edges:
+            adj_list[x].append(y)
+            adj_list[y].append(x)
+
+        parent = {0: None}
+        que = deque()
+        que.append(0)
+        node_count = 0
+
+        while que:
+            node = que.popleft()
+            node_count += 1
+            for child in adj_list[node]:
+                if child == parent[node]:
+                    continue
+                elif child in parent:
+                    # back-edge, cycle
+                    return False
+                else:
+                    # double acts as a visited set
+                    parent[child] = node
+                    que.append(child)
+
+        # Handle corner case, what if it's a forrest
+        return node_count == n
+
+# Time Complexity: O(V+E)
+# Space Complexity: O(V+E)
