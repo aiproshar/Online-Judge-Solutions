@@ -114,5 +114,5 @@ class Solution:
         # Handle corner case, what if it's a forrest
         return node_count == n
 
-# Time Complexity: O(V+E)
-# Space Complexity: O(V+E)
+# Time Complexity: O(V+E) -> But E == V because of early check
+# Space Complexity: O(V+E) -> But E == V because of early check
