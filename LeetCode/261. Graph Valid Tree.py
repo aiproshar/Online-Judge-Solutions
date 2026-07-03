@@ -116,3 +116,56 @@ class Solution:
 
 # Time Complexity: O(V+E) -> But E == V because of early check
 # Space Complexity: O(V+E) -> But E == V because of early check
+
+
+
+
+
+
+'''
+DSU based implementation
+DSU to find how many unions were made
+Initially all nodes are distinct and we use the edges to connect them
+DSU to make sure we dont connect them if already connected
+So in the end, distinct will reduce to n
+'''
+
+
+class Solution:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+
+
+        if len(edges) != n-1:
+            return False
+        parent = [item for item in range(n)]
+        rank = [0 for _ in range(n)]
+
+        def find(node):
+            if parent[node] != node:
+                parent[node] = find(parent[node])
+            return parent[node]
+        def union(node_1, node_2)-> bool:
+            root_1 = find(node_1)
+            root_2 = find(node_2)
+
+            if root_1 == root_2:
+                return False
+            if rank[root_1] > rank[root_2]:
+                parent[root_2] = root_1
+            elif rank[root_1] < rank[root_2]:
+                parent[root_1] = root_2
+            else:
+                parent[root_2] = root_1
+                rank[root_1] += 1
+            return True
+        distinct = n
+        for x,y in edges:
+            if union(x,y):
+                distinct -= 1
+        if distinct == 1:
+            return True
+        return False
+
+# both are O(1) find and union -> inverse ackerman serch it up
+# Time: O(n)
+# Space: O(n)
