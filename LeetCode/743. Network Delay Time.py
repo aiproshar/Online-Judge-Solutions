@@ -39,3 +39,32 @@ class Solution:
 
 
 
+'''
+Cleaner Solution
+'''
+
+
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+
+        adj_list = defaultdict(lambda: [])
+        for u, v, w in times:
+            adj_list[u - 1].append((w, v - 1))
+        distance = [math.inf] * n
+        heap = []
+        distance[k - 1] = 0
+        heapq.heappush(heap, (0, k - 1))
+        while heap:
+            dist, u = heapq.heappop(heap)
+            if dist > distance[u]:
+                continue
+            for cost, v in adj_list[u]:
+                if distance[u] + cost < distance[v]:
+                    # path relaxation
+                    distance[v] = distance[u] + cost
+                    heapq.heappush(heap, (distance[v], v))
+
+        return max(distance) if max(distance) != math.inf else -1
+# Time Complexity: O(ElogV)
+# Space Complexity: O(V+E)
+
