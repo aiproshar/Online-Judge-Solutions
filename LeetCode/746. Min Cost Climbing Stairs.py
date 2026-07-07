@@ -3,12 +3,13 @@
 # Dumbfuck approach
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
-        def min_cost(cost: list[int], n: int):
-            if n in (0, 1):
-                return cost[n]
-            return cost[n] + min(min_cost(cost, n-1), min_cost(cost, n-2))
         n = len(cost)
-        return min(min_cost(cost, n-1), min_cost(cost, n-2))
+        @cache
+        def dp(i) -> int:
+            if i == 0 or i == 1:
+                return 0
+            return min(dp(i - 1) + cost[i - 1], dp(i - 2) + cost[i - 2])
+        return dp(n)
 # Time Complexity: Max Depth n, binary balanced tree, so 2^n
 # Space complexity: Recursion stack O(n)       
 
@@ -16,21 +17,14 @@ class Solution:
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
         n = len(cost)
-        dp = [None for _ in range(n)]
+        # n+1 because we want to go over the stair
+        dp = [0] * (n + 1)
+        dp[0] = 0
+        dp[1] = 0
+        for i in range(2, len(cost) + 1):
+            dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2])
+        return dp[-1]
 
-        dp[0] = cost[0]
-        dp[1] = cost[1]
-
-        for k in range(2, n):
-            dp[k] = min(dp[k -1], dp[k - 2]) + cost[k]
-        
-        # This is the most important part
-        # Corner Case
-        # We can reach final state from two previous state
-        # Optimization dp, we must calculate this
-        # There are n stairs, but our final step is N + 1, the upper floor
-        # so we compare best path from n and n-1 (n-1 and n-2 for 0 based indexing)
-        return min(dp[n-1], dp[n-2])
 
 # Time Complexity: O(n)
 # Space complexity: O(n)
