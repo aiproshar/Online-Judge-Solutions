@@ -4,25 +4,18 @@
 # Took quite a while to find the recurrence relation
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        
-        dp = [None for _ in range(len(nums))]
-
-        dp[0] = nums[0]
-
-        def maxMoney(idx: int):
-            if idx < 0:
+        @cache
+        def dp(i) -> int:
+            if i < 0:
                 return 0
-            if idx == 0:
-                return dp[0]
-            if dp[idx] != None:
-                return dp[idx]
-            # Most tricky part, finding out the recurrence relation
-            dp[idx] = max(maxMoney(idx - 2) + nums[idx], maxMoney(idx - 1))
-            return dp[idx]
-        
-        maxMoney(len(nums) - 1)
-        
-        return dp[-1]
+            if i == 0:
+                return nums[0]
+            rob = nums[i] + dp(i - 2)
+            skip = dp(i - 1)
+            return max(rob, skip)
+
+        return dp(len(nums) - 1)
+
 
 # Time complexity: O(n)
 # space complexity: O(n)
@@ -33,17 +26,18 @@ class Solution:
 
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        if len(nums) < 3:
-            return nums[0] if len(nums) == 1 else max(nums[0], nums[1])
-        
-        dp = [None for _ in range(len(nums))]
+
+        if len(nums) == 1:
+            return nums[0]
+
+        dp = [None] * len(nums)
+        # Base Cases
         dp[0] = nums[0]
         dp[1] = max(nums[0], nums[1])
-
+        # Build UP
         for i in range(2, len(nums)):
-            dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])
-        
-        return dp[len(nums) - 1]
+            dp[i] = max(dp[i - 2] + nums[i], dp[i - 1]) # Recurrence Relation Eqv
+        return dp[-1]
 
 # Time and space complexity: O(n)
 # Followup -? can yoiu do this in constant space ?
