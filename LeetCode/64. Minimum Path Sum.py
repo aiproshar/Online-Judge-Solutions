@@ -1,38 +1,27 @@
 
-# TOP DOWN with memoization
-# REcursive dp
 
+'''
+Top Down Recursive Approach
+1. Objective Function: F(x,y) -> minimum cost to come to x,y position. We memoize this
+2. Base Case: F(0,0) -> This is start point, only the grid cost is here
+3. Recurrence Relation: F(x,y) = min{F(x-1, y) , F(x, y-1)} + cost[x][y]
+4. Order Of Computation: 0,0 -> m-1, n-1
+5. Location: dp[m-1, n-1]
+'''
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
-        INF = float('inf')
-        ROW = len(grid)
-        COL = len(grid[0])
-        dp = [[INF for _ in range(COL)] for _ in range(ROW)]
-
-        dp[0][0] = grid[0][0]
-
-        def path_sum(i, j):
-            # Base case
-            if i == 0 and j == 0:
+        @cache
+        def dp(x, y) -> int:
+            if x == 0 and y == 0:
                 return grid[0][0]
-            # Bound Check
-            if i < 0 or j < 0:
-                return INF
-            # Memoization, reduces time complexity from 2^(m+n) to m*n (exponential to polynomial)
-            if dp[i][j] != INF:
-                return dp[i][j]
-            up_sum = path_sum(i - 1, j)
-            left_sum = path_sum(i, j - 1)
+            if x < 0 or y < 0:
+                return math.inf
+            return min(dp(x - 1, y), dp(x, y - 1)) + grid[x][y]
 
-            dp[i][j] = min(up_sum, left_sum) + grid[i][j]
-            return dp[i][j]
-        
-        
-        min_cost = path_sum(ROW - 1, COL - 1)
-        return min_cost
+        return dp(len(grid) - 1, len(grid[0]) - 1)
 
-            
-        
+# Time Complexity: O(m*n) total DP state Space
+# Space Complexity: O(m*n) for State Space Cache + O(m+n) for recursion depth
 
 # 2D basic dp table
 # Forward dp, iterative
