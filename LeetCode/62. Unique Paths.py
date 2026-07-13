@@ -12,7 +12,7 @@ class Solution:
             if i < 0 or j < 0:
                 return 0
 
-            return dp(i - 1, j) + dp(j - 1, i)
+            return dp(i - 1, j) + dp(i, j-1)
 
         return dp(m - 1, n - 1)
 
