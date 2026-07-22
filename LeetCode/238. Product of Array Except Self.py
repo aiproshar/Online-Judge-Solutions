@@ -27,28 +27,24 @@ class Solution:
 # You need to use prefix /postfix sum/product strategy
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
-        n = len(nums)
-        left_list = [None] * n
-        right_list = [None] * n
-        left_list[0] = nums[0]  # 1,0,0,0
-        right_list[n - 1] = nums[n - 1]  # 0,0,0,4
 
-        i = 1
-        while i < len(nums):
-            left_list[i] = nums[i] * left_list[i - 1]
-            i += 1
+        prefix = [1] * len(nums)
+        suffix = [1] * len(nums)
 
-        i = n - 2
-        while i >= 0:
-            right_list[i] = nums[i] * right_list[i + 1]
-            i -= 1
+        prefix[0] = nums[0]
+        suffix[-1] = nums[-1]
 
-        product_array = []
+        for i in range(1, len(nums)):
+            prefix[i] = prefix[i - 1] * nums[i]
 
-        for idx, _ in enumerate(nums):
-            left = left_list[idx - 1] if idx - 1 >= 0 else 1
-            right = right_list[idx + 1] if idx + 1 < len(right_list) else 1
-            product_array.append(left * right)
-        return product_array
+        for i in range(len(nums) - 2, -1, -1):
+            suffix[i] = suffix[i + 1] * nums[i]
+
+        res = [None] * len(nums)
+        for i in range(1, len(nums) - 1):
+            res[i] = prefix[i - 1] * suffix[i + 1]
+        res[0] = suffix[1]
+        res[-1] = prefix[-2]
+        return res
 # Time complexity:  O(n)
 # Space complexity:  O(n)
