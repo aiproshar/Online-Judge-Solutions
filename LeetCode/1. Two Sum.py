@@ -12,7 +12,7 @@ class Solution:
 
 
 # Better implementation
-# Instead of creating the whole dict, which will have issue in event of duplicate number actualy in the list
+# Instead of creating the whole dict, which will have issue in event of duplicate number actually in the list
 # we check on the fly. If mirror no there, insert it, Might have mirror in future
 # [3,3] works fine now
 class Solution:
@@ -27,4 +27,5 @@ class Solution:
         return []
 
 
-
+# time complexity: O(n)
+# Space Complexity: O(n)
