@@ -1,42 +1,37 @@
-# combination of both substring and anagram
-# A bit complex, needs to define compare of two dict
+"""
+Quite Complex for a medium problem
+Anagrams + sub-string problem
+
+Fixed Window sliding Problem, cleaner invariant design
+"""
 
 
 class Solution:
-    # Area of improvement, we're doing repetitive compare lookups of whole dict
-    def isSub(self, s1: defaultdict, s2: defaultdict) -> bool:
-        for key, val in s1.items():
-            if s2[key] != val:
-                return False
-        return True
-
     def checkInclusion(self, s1: str, s2: str) -> bool:
 
         if len(s1) > len(s2):
             return False
-        freq_s1 = defaultdict(lambda: 0)
-        freq_s2 = defaultdict(lambda: 0)
 
-        for char in s1:
-            freq_s1[char] += 1
+        freq_s1 = [0] * 26  # constant window
+        freq_s2 = [0] * 26  # sliding here.
 
-        for char in s2[:len(s1)]:
-            freq_s2[char] += 1
+        for i in range(len(s1)):
+            freq_s1[ord(s1[i]) - ord('a')] += 1
+            freq_s2[ord(s2[i]) - ord('a')] += 1
 
-        if self.isZero(freq_s1, freq_s2):
+        k = len(s1)
+        if freq_s1 == freq_s2:
             return True
-        left = 0
-        right = len(s1) - 1
 
-        while right + 1 < len(s2):
-            freq_s2[s2[left]] -= 1
-            freq_s2[s2[right + 1]] += 1
-            if self.isSub(freq_s1, freq_s2):
+        # Loop Invariant, we processed upto j length
+        for j in range(len(s1), len(s2)):
+            freq_s2[ord(s2[j - k]) - ord('a')] -= 1
+            freq_s2[ord(s2[j]) - ord('a')] += 1
+            if freq_s1 == freq_s2:
                 return True
-            left += 1
-            right += 1
         return False
-# Time complexity: O(n) -> two pointer one pass, honestly its 26* O(n)
+        return False
+# Time complexity: O(n) -> two pointer one pass, honestly its 26* O(n). But we are using array, a so lot of cache hit
 # Space complexity: O(1) -> Yes, because keys are constant space, only 26 letter
 
 
