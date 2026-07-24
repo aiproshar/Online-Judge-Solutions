@@ -2,15 +2,17 @@
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
 
-        n = len(nums)
-        window_max = []
-        for i in range(n - k + 1):
-            mx = float('-inf')
-            for j in range(i, i + k):
-                if nums[j] > mx:
-                    mx = nums[j]
-            window_max.append(mx)
-        return window_max
+        que = deque()
+        ans = []
+        for i in range(k):
+            que.append(nums[i])
+        ans.append(max(que))
+        for i in range(k, len(nums)):
+            que.popleft()
+            que.append(nums[i])
+            ans.append(max(que))
+        return ans
+
 
 # Time complexity: O(n*K)
 # Space complexity: O(1) or O(n) because of result array
