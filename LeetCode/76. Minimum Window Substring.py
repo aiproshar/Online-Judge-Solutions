@@ -30,6 +30,27 @@ class Solution:
 # Time complexity: O(n^2)
 # Space complexity: O(1) -> dicts are constant key space
 
+# Another Brute Force but cleaner, tricks to reduce code
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        freq = defaultdict(lambda: 0)
+        for char in t:
+            freq[char] += 1
+        sub_string = ""
+        for i in range(len(s)):
+            current = freq.copy()
+            for j in range(i, len(s)):
+                if current[s[j]] > 0:
+                    current[s[j]] -= 1
+                    if sum(current.values()) == 0:
+                        if sub_string == "" or len(sub_string) > (j - i + 1):
+                            sub_string = s[i:j+1]
+        return sub_string
+
+
+
+
+
 
 
 # Followup of reduced time complexity -> linear time
