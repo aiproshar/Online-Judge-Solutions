@@ -10,31 +10,33 @@ class MinStack:
     def __init__(self):
         self.stack = []
 
-    def push(self, val: int) -> None:
-        if not self.stack:
-            self.stack.append((val, val))
+    def push(self, value: int) -> None:
+        if self.stack:
+            # We have elements
+            item = (value, min(value, self.stack[-1][1]))
+            self.stack.append(item)
         else:
-            if val < self.stack[-1][1]:
-                self.stack.append((val, val))
-            else:
-                self.stack.append((val, self.stack[-1][1]))
-
+            # empty stack
+            self.stack.append((value, value))
 
     def pop(self) -> None:
-        self.stack.pop()
+        # bound check, always must for interview, even leetcode says we won't run pop on empty
+        # Maybe throw an exception, talk with interviewer
+        # Show real SWE skills FFS
+        if self.stack:
+            self.stack.pop()
 
     def top(self) -> int:
-        return self.stack[-1][0]
+        if self.stack:
+            return self.stack[-1][0]
 
     def getMin(self) -> int:
-        return self.stack[-1][1]
-
-# Time complexity: O(n) -> N operations, each constant time
-# Space complexity: O(n) -> N ops can be push type, so stack hold n tuples
+        if self.stack:
+            return self.stack[-1][1]
 
 # Your MinStack object will be instantiated and called as such:
 # obj = MinStack()
-# obj.push(val)
+# obj.push(value)
 # obj.pop()
 # param_3 = obj.top()
 # param_4 = obj.getMin()
