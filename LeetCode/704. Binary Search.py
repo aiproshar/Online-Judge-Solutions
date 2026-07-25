@@ -17,7 +17,7 @@ class Solution:
 
 
 
-# non trivial recursive solution
+# non-trivial recursive solution
 # Just for example
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
@@ -34,3 +34,13 @@ class Solution:
             elif target < nums[mid]:
                 return bi_search(lo, mid-1)
         return bi_search(lo, hi)
+
+# Python Build In bisect library
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+
+        position = bisect_left(nums, target)
+        if position < len(nums) and nums[position] == target:
+            return position
+        else:
+            return -1
