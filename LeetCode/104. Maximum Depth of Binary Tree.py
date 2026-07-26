@@ -23,33 +23,32 @@ class Solution:
         mx = max(left, right)
         return mx + 1
 
+# Time Complexity: O(n)
+# Space Complexity: O(h) recursion depth, can be between n -> lgn
+
 '''
 level order traversal BFS, take count how many pass we populated the stack
 '''
-
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         if root is None:
             return 0
-
         que = deque()
-        depth = 0
         que.append(root)
-
+        depth = 0
         while que:
-            nodes_count = len(que)
-            depth += 1
-            while nodes_count:
-                current = que.popleft()
-                if current.left != None:
-                    que.append(current.left)
-                if current.right != None:
-                    que.append(current.right)
-                nodes_count -= 1
+            width = len(que) #width of current level
+            depth += 1 # the depth we are in, increment on each level
+            for _ in range(width):
+                node = que.popleft()
+                if node.left is not None:
+                    que.append(node.left)
+                if node.right is not None:
+                    que.append(node.right)
         return depth
 
 # Time complexity: O(n)
-# SPace complexity: O(h)
+# Space complexity: O(n) // no of leaf nodes for balanced tree is n//2
 
 
 
