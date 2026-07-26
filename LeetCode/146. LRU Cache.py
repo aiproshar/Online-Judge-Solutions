@@ -25,15 +25,6 @@ class LRUCache:
 # Space complexity: linear
 
 
-
-class Node:
-    def __init__(self, val=None, pre=None, next_=None):
-        self.val = val
-        self.pre = pre
-        self.next = next_
-
-
-
 '''
 Extremely messy implementation, lof of duplicate code
 Doubly linked list + dict with sentinel head/tail
@@ -42,56 +33,84 @@ LRU cache class embeds a DLL logic, which makes it messy
 A separate doubly linked list class will be more ideal
 '''
 
-class LRUCache:
 
+class Node:
+    def __init__(self, key, prev=None, next=None):
+        self.prev = prev
+        self.next = next
+        self.key = key
+
+
+class LRUCache:
     def __init__(self, capacity: int):
-        self.head = Node()
-        self.tail = Node()
+        self.capacity = capacity
+        self.len = 0
+        self.head = Node(None)
+        self.tail = Node(None)
         self.head.next = self.tail
-        self.tail.pre = self.head
-        self.cap = capacity
-        self.dict = {}
+        self.tail.prev = self.head
+        self.data = {}
 
     def get(self, key: int) -> int:
-        if key in self.dict:
-            current_node = self.dict[key][1]
-            # new node at end
-            new_node = Node(key, self.tail.pre, self.tail)
-            self.tail.pre.next = new_node
-            self.tail.pre = new_node
-            # del the existing node
-            current_node.pre.next = current_node.next
-            current_node.next.pre = current_node.pre
-            # new node reference on the dict
-            val = self.dict[key][0]
-            self.dict[key] = (val, new_node)
-            return val
+        if key in self.data:
+            # deletion
+            node = self.data[key][1]
+            node.prev.next = node.next
+            node.next.prev = node.prev
+            del node
+            # Append at end
+            value = self.data[key][0]
+            node = Node(key)
+            node.next = self.tail
+            node.prev = self.tail.prev
+            node.prev.next = node
+            node.next.prev = node
+            # update the HashTable
+            self.data[key] = (value, node)
+            return value
         else:
             return -1
-    def put(self, key: int, value: int) -> None:
-        if key not in self.dict:
-            new_node = Node(key, self.tail.pre, self.tail)
-            self.tail.pre.next = new_node
-            self.tail.pre = new_node
-            self.dict[key] = (value, new_node)
-            # delete the front item, oldest
-            if len(self.dict) > self.cap:
-                key = self.head.next.val
-                del self.dict[key]
-                self.head.next.next.pre = self.head
-                self.head.next = self.head.next.next
 
+    def put(self, key: int, value: int) -> None:
+        if key in self.data:
+            # deletion
+            node = self.data[key][1]
+            node.prev.next = node.next
+            node.next.prev = node.prev
+            # Append at end
+            node = Node(key)
+            node.next = self.tail
+            node.prev = self.tail.prev
+            node.prev.next = node
+            node.next.prev = node
+            # update the HashTable
+            self.data[key] = (value, node)
         else:
-            # Refresh
-            current_node = self.dict[key][1]
-            # new node at end
-            new_node = Node(key, self.tail.pre, self.tail)
-            self.tail.pre.next = new_node
-            self.tail.pre = new_node
-            # del the existing node
-            current_node.pre.next = current_node.next
-            current_node.next.pre = current_node.pre
-            self.dict[key] = (value, new_node)
+            # append at end
+            node = Node(key)
+            node.next = self.tail
+            node.prev = self.tail.prev
+            node.prev.next = node
+            node.next.prev = node
+            # update the HashTable
+            self.data[key] = (value, node)
+
+            self.len += 1
+            # Evict LRU
+            if self.len > self.capacity:
+                node = self.head.next
+                node.prev.next = node.next
+                node.next.prev = node.prev
+                del self.data[node.key]
+                self.len -= 1
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+
+
 '''
 Cleanest solution and also largest and most time consuming
 Node Class -> Doubly Linked List (DLL) and Then LRU class: Gradual buildup
