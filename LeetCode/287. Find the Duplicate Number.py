@@ -45,3 +45,47 @@ class Solution:
 # Time: O(n) Space: O(1)
 
 
+
+'''
+Using Floyd's cycle detection Algorithm
+There is a cycle that is guranteed, we need to find where is the cycle
+
+0 → 1 → 3 → 2 → 4
+                │
+                │ nums[4] = 2
+                ▼
+                2   ← back to the "2" node (loop entrance)
+
+
+            
+              loop
+           ┌────────┐
+0 → 1 → 3 → 2 → 4 ──┘
+            ▲
+         entrance = duplicate = 2
+         
+         
+0 → 1 → 3 → 2 → 4 ──┐
+            ▲       │
+            └───────┘
+       Floyd returns 2 (entrance),
+       not 4 (the one that loops back)
+'''
+
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        slow = 0
+        fast = 0
+        while True:
+            slow = nums[slow]
+            fast = nums[fast]
+            fast = nums[fast]
+            if slow == fast:
+                break
+        slow = 0
+        while slow != fast:
+            slow = nums[slow]
+            fast = nums[fast]
+        return slow
+
+
