@@ -24,3 +24,33 @@ class Solution:
 
 # Time Complexity: O(n)
 # Space Complexity: O(h)
+
+
+'''
+Iterative Approach, no risk of stack overflow
+'''
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+
+        stack = []
+
+        stack.append((p, q))
+        while stack:
+            x, y = stack.pop()
+            if x is None and y is None:
+                continue
+            if x is None or y is None:
+                return False
+            if x.val != y.val:
+                return False
+            stack.append((x.left, y.left))
+            stack.append((x.right, y.right))
+        return True
