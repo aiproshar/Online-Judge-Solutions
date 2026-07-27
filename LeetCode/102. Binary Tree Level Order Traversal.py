@@ -12,24 +12,25 @@
 # On a tree, so there is no cycle and we don't need to do extra stuff to avoid cycle
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+
         if root is None:
             return []
-        output = []
+
         que = deque()
         que.append(root)
+        res = []
         while que:
-            current_len = len(que)
-            level_out = []
-            while current_len > 0:
-                current = que.popleft()
-                level_out.append(current.val)
-                if current.left is not None:
-                    que.append(current.left)
-                if current.right is not None:
-                    que.append(current.right)
-                current_len -= 1
-            output.append(level_out)
-        return output
+            width = len(que)
+            current = []
+            for _ in range(width):
+                node = que.popleft()
+                current.append(node.val)
+                if node.left is not None:
+                    que.append(node.left)
+                if node.right is not None:
+                    que.append(node.right)
+            res.append(current)
+        return res
 
 # Time Complexity: O(n)
 # Space complexity: O(n) -> Leaf max width, which on a balanced tree is n/2 nodes means O(n)
