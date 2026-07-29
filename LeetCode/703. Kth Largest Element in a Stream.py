@@ -1,7 +1,7 @@
 """
 Basic Heapq, default heap Min Heap in python
-For M max elements, we use min heap, because if pops out the minimum numbers, maximums stays
-For Minimum elements, use max heap, if poops the max elements so the minimums stays in the stream
+Use min heap to Trap maximum Values in Heap
+Use max heap to Trap minimum Values in Heap
 
 
 Think of a heap as some kind of buffer stream, no FIFO or LIFO, it captures top Most or bottom Most in the buffer, also pops out streams
