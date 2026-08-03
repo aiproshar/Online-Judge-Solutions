@@ -28,3 +28,25 @@ class Solution:
 
 # Time Complexity: O(nlogn) -> sort + n heap pus.pop each logn, so again O(nlogn + nlogn) -> O(nlogn)
 # Scape Complexity:heap can grow as linear, also sort so O(n)
+
+'''
+More elegant solution, event sweep based solution
+More on coding templates, Intervals section
+'''
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+
+        events = []
+        for start, end in intervals:
+            events.append((start, 1))
+            events.append((end, -1))
+
+        max_concurrent = 0
+        events.sort(key=lambda x: (x[0], x[1]))
+        current = 0
+        for _, val in events:
+            current += val
+            max_concurrent = max(max_concurrent, current)
+        return max_concurrent
+# Time Complexity: O(nlogn)
+# Space Complexity: O(n)
