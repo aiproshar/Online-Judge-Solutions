@@ -48,9 +48,12 @@ class Twitter:
 
 
 '''
-A bit better Solution
+A bit better Solution, this is interview ready
 Instead of taking 10 elements from each, we early terminate if the oldest post of heap is newer than 
 the curren followed post and heap is already at cap
+
+Also we dont to that initial make each friend of themself trick, that's bad according to all AIs
+And for x in set_a | set_b # New syntax. So beautful
 '''
 
 
@@ -61,9 +64,6 @@ class Twitter:
         self.posts = defaultdict(list)
         self.counter = 0
 
-        for i in range(1, 501):
-            self.follows[i].add(i)
-
     def postTweet(self, userId: int, tweetId: int) -> None:
         self.posts[userId].append((self.counter, tweetId))
         self.counter += 1
@@ -72,7 +72,7 @@ class Twitter:
 
         heap = []
 
-        for followed in self.follows[userId]:
+        for followed in self.follows[userId] | {userId}:
             i = len(self.posts[followed]) - 1
             while i >= 0:
                 if len(heap) == 10:
@@ -94,8 +94,7 @@ class Twitter:
         self.follows[followerId].add(followeeId)
 
     def unfollow(self, followerId: int, followeeId: int) -> None:
-        if followeeId != followeeId:
-            self.follows[followerId].discard(followeeId)
+        self.follows[followerId].discard(followeeId)
 
 # Your Twitter object will be instantiated and called as such:
 # obj = Twitter()
