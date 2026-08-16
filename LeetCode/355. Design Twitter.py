@@ -1,34 +1,101 @@
-#Classic OOP based problem
+'''
+Old Solution was YIKES, It was linear Scan and compare if it's a friend,
+It was the dumbest solution
+
+New one uses Heap, so
+'''
 
 class Twitter:
 
     def __init__(self):
-        self.tweets = []
-        self.follows = {}
+        self.follows = defaultdict(set)
+        self.posts = defaultdict(list)
+        self.counter = 0
 
         for i in range(1, 501):
-            self.follows[i] = {i}
+            self.follows[i].add(i)
 
     def postTweet(self, userId: int, tweetId: int) -> None:
-        self.tweets.append((userId, tweetId))
+        self.posts[userId].append((self.counter, tweetId))
+        self.counter += 1
 
     def getNewsFeed(self, userId: int) -> List[int]:
-        user_feed = []
-        for tweet in reversed(self.tweets):
-            if tweet[0] in self.follows[userId]:
-                user_feed.append(tweet[1])
-                if len(user_feed) == 10:
-                    break
-        return user_feed
+
+        heap = []
+
+        for followed in self.follows[userId]:
+            counter = 10
+            i = len(self.posts[followed]) - 1
+            while i >= 0 and counter >= 0:
+                heapq.heappush(heap, self.posts[followed][i])
+                if len(heap) > 10:
+                    heapq.heappop(heap)
+                i -= 1
+        tweets = []
+        while heap:
+            _, tweet = heapq.heappop(heap)
+            tweets.append(tweet)
+        return tweets[::-1]
 
     def follow(self, followerId: int, followeeId: int) -> None:
         self.follows[followerId].add(followeeId)
-        return None
 
     def unfollow(self, followerId: int, followeeId: int) -> None:
-        if followeeId in self.follows[followerId]:
-            self.follows[followerId].remove(followeeId)
+        if followeeId != followeeId:
+            self.follows[followerId].discard(followeeId)
 
+
+
+
+'''
+A bit better Solution
+Instead of taking 10 elements from each, we early terminate if the oldest post of heap is newer than 
+the curren followed post and heap is already at cap
+'''
+
+
+class Twitter:
+
+    def __init__(self):
+        self.follows = defaultdict(set)
+        self.posts = defaultdict(list)
+        self.counter = 0
+
+        for i in range(1, 501):
+            self.follows[i].add(i)
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        self.posts[userId].append((self.counter, tweetId))
+        self.counter += 1
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+
+        heap = []
+
+        for followed in self.follows[userId]:
+            i = len(self.posts[followed]) - 1
+            while i >= 0:
+                if len(heap) == 10:
+                    if self.posts[followed][i][0] > heap[0][0]:
+                        heapq.heappush(heap, self.posts[followed][i])
+                        heapq.heappop(heap)
+                    else:
+                        break
+                else:
+                    heapq.heappush(heap, self.posts[followed][i])
+                i -= 1
+        tweets = []
+        while heap:
+            _, tweet = heapq.heappop(heap)
+            tweets.append(tweet)
+        return tweets[::-1]
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        self.follows[followerId].add(followeeId)
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        if followeeId != followeeId:
+            self.follows[followerId].discard(followeeId)
 
 # Your Twitter object will be instantiated and called as such:
 # obj = Twitter()
