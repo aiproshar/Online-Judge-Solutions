@@ -1,62 +1,3 @@
-"""
-CCG pattern
-Choice on each step: i can take an open or a close
-Constrain: We have limited number on each parenthesis type
-Goal: Find Valid ones
-"""
-
-class Solution:
-    def _isValid(self, s: str) -> bool:
-
-        stack = []
-        for c in s:
-            if c == '(':
-                stack.append(c)
-            else:
-                if stack and stack[-1] == '(':
-                    stack.pop()
-                else:
-                    return False
-        if stack:
-            return False
-        return True
-
-    def generateParenthesis(self, n: int) -> List[str]:
-
-        res = []
-
-        def backtrack(open=n, close=n, current=[]):
-
-            if not open and not close:
-                if self._isValid(current):
-                    res.append("".join(current))
-            if open > 0:
-                current.append('(')
-                open -= 1
-                backtrack(open, close, current)
-                current.pop()
-                open += 1
-            if close > 0:
-                current.append(')')
-                close -= 1
-                backtrack(open, close, current)
-                current.pop()
-                close += 1
-
-        backtrack()
-        return res
-
-'''
-The time complexity is super difficult in this problem, a lot of crazy math involved, i mean PhD level math FFS
-Just use this upper bound, which is way way upper than IRL
-'''
-# Time Complexity: 2^2n * n -> n*4^n
-# Space Complexity: O(n) -> Recursion Depth
-# Output array size: n * 4^n (leaf * size in each leaf)
-
-
-
-
 
 '''
 More Clean Implementation
@@ -85,3 +26,30 @@ class Solution:
 # Time Complexity: 2^2n * n -> n*4^n
 # Space Complexity: O(n) -> Recursion Depth
 # Output array size: n * 4^n
+
+'''
+Did this while doing second pass
+'''
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+
+        res = []
+        def backtrack(open, close, current):
+            if open == n and close == n:
+                res.append("".join(current))
+                return
+            if close > open or open > n or close > n:
+                return
+            current.append('(')
+            backtrack(open + 1, close, current)
+            current.pop()
+
+            current.append(')')
+            backtrack(open, close + 1, current)
+            current.pop()
+            return
+        backtrack(0, 0, [])
+        return res
+
+# Time Complexity: 2^2n * n -> 4^n * n (n constant copy overhead)
+# Space Complexity: O(2n) recursion depth, output array size 4^n * n
