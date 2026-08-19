@@ -1,34 +1,39 @@
+'''
+Simple DFS search, with external for loop to kick off DFS upon first character match
+Similar to Graph Problems, but this is more of backtracking
+'''
+
+
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
-        is_match = False
-        def backtrack(row, col, i = 0) -> bool:
-            # Goals
-            if i == len(word):
+
+        def backtrack(x, y, idx, board) -> bool:
+            if idx == len(word):
                 return True
-            # Constrains
-            if not 0 <= row < len(board) or not 0 <= col < len(board[0]) or board[row][col] != word[i]:
-                return False
-            board[row][col] = None
-            explore = [
-                # choices
-                backtrack(row+1, col, i+1),
-                backtrack(row-1, col, i+1),
-                backtrack(row, col+1, i+1),
-                backtrack(row, col-1, i+1)
-            ]
-            board[row][col] = word[i]
-            return any(explore)
-        # All cell can be start point
-        for start_row in range(len(board)):
-            for start_col in range(len(board[0])):
-                if backtrack(start_row, start_col, 0):
-                    return True
+
+            direction = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+            for dx, dy in direction:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < len(board) and 0 <= ny < len(board[0]):
+                    if board[nx][ny] == word[idx]:
+                        temp = board[nx][ny]
+                        board[nx][ny] = None
+                        res = backtrack(nx, ny, idx + 1, board)
+                        board[nx][ny] = temp
+                        if res:
+                            return True
+            return False
+
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] == word[0]:
+                    board[i][j] = None
+                    if backtrack(i, j, 1, board) is True:
+                        board[i][j] = word[0]
+                        return True
+                    board[i][j] = word[0]
         return False
-
-'''
-Time And Space Complexity is very important: You might think its 4^L but its actually 
-3^L, because one of the direction is parent, which we will skip
-Time Complexity: M*N*3^L , where L is the length of word
-
-Space Complexity: Recursion  Depth, O(l) 
-'''
+# Time Complexity: We have 4 choices, but one of them is grandparent, so its 3. so O(3^L) , where L is word length
+# We start DFS for M*N times, so M*N*3^L
+# Space Complexity: O(L) recursion depth + we do modify the board so O(M*N) discusss with interviewer
