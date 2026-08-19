@@ -1,62 +1,62 @@
-# Extension/ Followup of 78-subsets problem
-# We can have duplicates in the list but we dont want duplicate subsets
-# Solution: create unique subset signature and use a set to gurantee each lists uniqueness
+'''
+Initial Solution, a bit bruteforce and no pruning
+We generate all possible subset and when we reach end, we sort the current and
+put it in a set so that we avoid having duplicates
+'''
 
 
 class Solution:
-
-    def _dfs(self, path, idx):
-        if idx == len(self.nums):
-            # we are in the leaf
-            temp = tuple(sorted(path.copy())). # list unique signature, its order agnostic
-            if temp not in self.unique:
-                self.unique.add(temp)
-                self.subsets.append(path[:])
-            return
-
-        
-        path.append(self.nums[idx])
-        self._dfs(path, idx + 1)
-        path.pop()
-        self._dfs(path, idx + 1)
-        
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
-        self.unique = set()
-        self.nums = nums
-        self.subsets = []
+        res = set()
 
-        self._dfs([], 0)
+        def backtrack(i, current):
+            if i == len(nums):
+                temp = current.copy()
+                temp.sort()
+                res.add(tuple(temp))
+                return
+            # take current one
+            current.append(nums[i])
+            backtrack(i + 1, current)
+            current.pop()
+            # skip current one
+            backtrack(i + 1, current)
 
-        return self.subsets
- # time complexity: Branch -> 2, depth -> n, on each node we sort so nlogn, complexity: O(N log N * 2 ^ N)
- # space compexity: O(n)
+        backtrack(0, [])
+        return [list(x) for x in res]
+
+# Time Complexity: O(2^N * nlogn
+# Space Complexity: O(2^N * N)
+
+'''
+So how we avoid the duplicates, same strategy as Combinatorics Sum II : https://github.com/aiproshar/Online-Judge-Solutions/blob/master/LeetCode/40.%20Combination%20Sum%20II.py
+The strategy is simple, if we skip we skip all similar numbers continuously, that's the main logic
+More in depth explain on Combinatorics Sum II
+'''
 
 
-
-# More optimized solution
-# This is same 3sum strategy, we avoid duplicates by sorting the arrary and moving forward for same consecutive elements
- class Solution:
-
-    def _dfs(self, path, idx):
-        if idx == len(self.nums):
-            self.subsets.append(path[:])
-            return
-        path.append(self.nums[idx])
-        self._dfs(path, idx + 1)
-        path.pop()
-        while idx+1 < len(self.nums) and self.nums[idx+1] == self.nums[idx]:
-            idx += 1
-        self._dfs(path, idx + 1)
-        
+class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
-        self.unique = set()
-        self.nums = sorted(nums)
-        self.subsets = []
 
-        self._dfs([], 0)
+        res = []
+        nums.sort()
 
-        return self.subsets
+        def backtrack(i, current):
+            if i == len(nums):
+                res.append(current.copy())
+                return
+            # take the current element
+            current.append(nums[i])
+            backtrack(i + 1, current)
+            current.pop()
 
-# Time complexity: 2^N and for consecutive moving forward, another n, so O(N * 2 ^ N)
+            # skip the current and all its dupes
+            while i + 1 < len(nums) and nums[i + 1] == nums[i]:
+                i += 1
+            backtrack(i + 1, current)
 
-        
+        backtrack(0, [])
+        return res
+
+# Time Complexity: O(2^N * N)
+# Space: O(2^N * N) for result array, aux space is O(N) recursion depth
