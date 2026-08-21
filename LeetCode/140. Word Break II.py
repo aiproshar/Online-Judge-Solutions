@@ -22,8 +22,8 @@ class Solution:
         backtrack(0, [])
         return res
 
-# Time Complexity: O(2^N)
-# Space: O(2^N)
+# Time Complexity: 2^N * N
+# Space: 2^N * N
 
 '''
 This was notoriously difficult, more difficult than any problem i ever solved
@@ -56,9 +56,11 @@ class Solution:
 
         res = backtrack(0)
         return [" ".join(x) for x in res]
-# Time Complexity: O(n) states, on each state n loop and copy overhead, so its O(n^3)
-# Space: O(n), at top we can have the sentence broken into n different distinct words n dofferent eays
-# So its O(n^2)
+
+
+# Time Complexity: 2^N * N
+# Space: 2^N * N
+# Use Gemini to discuss the TC and SC of this problem
 
 
 '''
