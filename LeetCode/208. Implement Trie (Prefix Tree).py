@@ -7,38 +7,52 @@
 class Trie:
 
     def __init__(self):
-        self.root = {}
+        self.trie = {}
+
     def insert(self, word: str) -> None:
-        curr = self.root
+
+        current = self.trie
         for char in word:
-            if char in curr:
-                curr = curr[char]
-            else:
-                curr[char] = {}
-                curr = curr[char]
-        curr[None] = None
+            if char not in current:
+                current[char] = {}
+            current = current[char]
+        # end marker
+        current[None] = None
+
     def search(self, word: str) -> bool:
-        curr = self.root
+        current = self.trie
         for char in word:
-            if char not in curr:
+            if char not in current:
                 return False
-            else:
-                curr = curr[char]
-        if None in curr:
-            return True
-        return False
+            current = current[char]
+        # Prefix matched, lets check for end marker
+        return None in current
+
     def startsWith(self, prefix: str) -> bool:
-        curr = self.root
+        current = self.trie
         for char in prefix:
-            if char not in curr:
+            if char not in current:
                 return False
-            else:
-                curr = curr[char]
+            current = current[char]
         return True
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)
 
 # Time Complexity: We can have depth of 2000, each depth we can have 26 choices, but we're only exploring one path
 # So its O(n) -> len of string for both insert and search
-# Space: For insert, 26^n is our spate space, where is is max word len, but in reality, if N is no of words and M is avd length,
+# Space: For insert, 26^n is our state space, where n is max word len, but in reality, if N is no of words and M is avd length,
 # Its O(M*N)
 
 # Your Trie object will be instantiated and called as such:
