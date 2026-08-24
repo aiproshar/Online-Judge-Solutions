@@ -1,36 +1,37 @@
 class WordDictionary:
 
     def __init__(self):
-        self.root = {}
-
-    def backtrack(self, word, idx, curr) -> bool:
-        if idx == len(word):
-            if None in curr:
-                return True
-            else:
-                return False
-        if word[idx] in curr:
-            return self.backtrack(word, idx + 1, curr[word[idx]])
-        if word[idx] == ".":
-            for ch in curr:
-                if ch is not None and self.backtrack(word, idx + 1, curr[ch]):
-                    return True
-            return False
-        return False
+        self.trie = {}
 
     def addWord(self, word: str) -> None:
-        curr = self.root
-        for w in word:
-            if w in curr:
-                curr = curr[w]
-            else:
-                curr[w] = {}
-                curr = curr[w]
-        curr[None] = None
+        current = self.trie
+        for char in word:
+            if char not in current:
+                current[char] = {}
+            current = current[char]
+        current[None] = None
+
+    def __search(self, word, start_, current) -> bool:
+        for i in range(start_, len(word)):
+            if word[i] == '.':
+                for available in current:
+                    if available is None:
+                        continue
+                    if self.__search(word, i + 1, current[available]):
+                        return True
+                return False
+            elif word[i] not in current:
+                return False
+            current = current[word[i]]
+        return None in current
 
     def search(self, word: str) -> bool:
-        return self.backtrack(word, 0, self.root)
+        return self.__search(word, 0, self.trie)
 
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)
 '''
 Write: O(L) time and O(L) space
 search: O(L) with no ., 26^L with .
