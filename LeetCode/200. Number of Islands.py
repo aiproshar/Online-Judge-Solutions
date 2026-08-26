@@ -39,4 +39,4 @@ class Solution:
 		return island_count
 
 # Time Complexity: Explores all the nodes only once, so O(n*m)
-# Space complexity: Queue can grow as big as all the nodes, so also O(n*M)
+# Space complexity: Queue growth is a wavefront, bounded by min(m, n). Why? Ue claude for visual explain
