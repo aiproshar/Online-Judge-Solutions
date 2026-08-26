@@ -11,20 +11,28 @@ from typing import Optional
 
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+
+        # early termination
         if node is None:
             return None
-        new_nodes = {}
-        new_nodes[node] = Node(node.val)
 
+        mirror = {}
         que = deque()
         que.append(node)
+        mirror[node] = Node(node.val)
 
         while que:
-            parent = que.popleft()
-            for child in parent.neighbors:
-                if child not in new_nodes:
-                    new_nodes[child] = Node(child.val)
-                    que.append(child)
-                new_nodes[parent].neighbors.append(new_nodes[child])
+            current = que.popleft()
 
-        return new_nodes[node]
+            for child in current.neighbors:
+                if child not in mirror:
+                    # brand new child, lets create the mirror and que for further explore
+                    mirror[child] = Node(val=child.val)
+                    que.append(child)
+                # we must create the connection regardless the child was visted before or not
+                mirror[current].neighbors.append(mirror[child])
+
+        return mirror[node]
+
+# Time Complexity: O(V+E)
+# Space Complexity: O(V+E) in the output, Aux Space is O(V)
