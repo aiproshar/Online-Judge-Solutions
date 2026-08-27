@@ -1,33 +1,42 @@
-'''
-Updated cleanest solution
-Multi Source BFS, we do modify the grid so no separate visited / parent relation data is needed
-First push all the source in the queue, BFS guarantees we only need to update once
-'''
 class Solution:
-    def wallsAndGates(self, rooms: List[List[int]]) -> None:
-        """
-        Do not return anything, modify rooms in-place instead.
-        """
+    # multi source BFS, pass all the sources together
+    def _bfs(self, sources: list[tuple[int, int]], rooms) -> None:
         INF = 2147483647
-        que = deque()
-        for x in range(len(rooms)):
-            for y in range(len(rooms[0])):
-                if rooms[x][y] == 0:
-                    que.append((x,y))
+        que = deque(sources)
         direction = [
-            (-1, 0),
-            (0, -1),
             (1, 0),
-            (0, 1)
+            (0, 1),
+            (-1, 0),
+            (0, -1)
         ]
         while que:
             x, y = que.popleft()
             for dx, dy in direction:
-                nx, ny = x+dx, y+dy
+                nx, ny = x + dx, y + dy
                 if 0 <= nx < len(rooms) and 0 <= ny < len(rooms[0]):
+                    '''
+                    The below code is overkill, as this becomes close to dijkstra
+                    By the nature of BFS, we always visit closest nodes first
+                    So our update will be optimal the very first try, no subsequent update is required
+
+                    if rooms[nx][ny] > 0 and rooms[x][y] + 1 < rooms[nx][ny]:
+                        rooms[nx][ny] = rooms[x][y] + 1
+                        que.append((nx, ny))
+                    '''
                     if rooms[nx][ny] == INF:
                         rooms[nx][ny] = rooms[x][y] + 1
                         que.append((nx, ny))
 
-# Time Complexity: We visit each cell once, so its O(m*n)
-# Space complexity: O(m*n), que can grow holding all elements, which is O(m*n)
+    def wallsAndGates(self, rooms: List[List[int]]) -> None:
+        """
+        Do not return anything, modify rooms in-place instead.
+        """
+        sources = []
+        for i in range(len(rooms)):
+            for j in range(len(rooms[0])):
+                if rooms[i][j] == 0:
+                    sources.append((i, j))
+        self._bfs(sources, rooms)
+
+# Time Complexity: O(M*N)
+# Space Complexity: O(M*N)
