@@ -5,35 +5,38 @@
 
 
 class Solution:
-    def __dfs(self, source) -> bool:
-        WHITE, GREY, BLACK = 0, 1, 2
-        self.color[source] = GREY
-        for child in self.adj_list[source]:
-            if self.color[child] == GREY:
-                return True
-            if self.color[child] == WHITE and self.__dfs(child):
-                return True
-        self.color[source] = BLACK
-        self.order.append(source)
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         WHITE, GREY, BLACK = 0, 1, 2
-        self.adj_list = defaultdict(list)
+        adj_list = defaultdict(list)
 
-        for dest, source in prerequisites:
-            self.adj_list[source].append(dest)
-        self.order = []
-        self.color = [WHITE] * numCourses
+        for y, x in prerequisites:
+            adj_list[x].append(y)
+        color = [WHITE] * numCourses
+        finish_time = []
+        # True means cycle present
+        def dfs(source: int) -> bool:
+            color[source] = GREY
+            for child in adj_list[source]:
+                if color[child] == GREY:
+                    return True
+                if color[child] == WHITE and dfs(child):
+                    return True
+            color[source] = BLACK
+            finish_time.append(source)
+            return False
 
-        for source in range(numCourses):
-            if self.color[source] == WHITE:
-                cycle = self.__dfs(source)
-                if cycle is True:
+        for i in range(numCourses):
+            # We are trying to detect a cycle
+            # We must go through all the nodes because of possibility of disconnected graph
+            # invoke dfs on all disconnected graph
+            if color[i] == WHITE:
+                if dfs(i):
+                    # cycle detected, as per Problem Statement return []
                     return []
-        # We need to reverse
-        return self.order[::-1]
-
+        return finish_time[::-1]
 # Time: O(V+E)
 # Space: O(V+E)
+# Stack overflow risk in linked list like graph
 
 
 
@@ -45,12 +48,12 @@ Because they must be present at the order
 '''
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        adj_list = defaultdict(lambda: [])
+        adj_list = defaultdict(list)
         indegree = [0] * numCourses
 
-        for x, y in prerequisites:
-            adj_list[y].append(x)
-            indegree[x] += 1
+        for y, x in prerequisites:
+            adj_list[x].append(y)
+            indegree[y] += 1
         order = []
         que = deque(i for i in range(len(indegree)) if indegree[i] == 0)
         while que:
@@ -61,7 +64,7 @@ class Solution:
                 if indegree[child] == 0:
                     que.append(child)
 
-        if len(order) == len(indegree):
+        if len(order) == numCourses:
             return order
         return []
 
