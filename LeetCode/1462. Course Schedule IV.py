@@ -38,4 +38,30 @@ class Solution:
                 res.append(False)
         return res
 
-# Time Complexity: O(V+E) for adj list creation, for a dense DAG, this can go to O(v3)
+# Time Complexity: O(V+E) for adj list creation, dfs calculates V times exactly due to cache, and each call its O(VE)
+# each query is constant per lookup, so its O(q). in total its O(VE+q)
+
+#Space Complexity: O(V^2 + Q)
+
+
+class Solution:
+    def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[
+        bool]:
+
+        matrix = [[False] * numCourses for _ in range(numCourses)]
+
+        for x, y in prerequisites:
+            matrix[x][y] = True
+
+        for k in range(numCourses):
+            for i in range(numCourses):
+                for j in range(numCourses):
+                    matrix[i][j] = matrix[i][j] or (matrix[i][k] and matrix[k][j])
+        res = []
+        for x, y in queries:
+            res.append(matrix[x][y])
+
+        return res
+
+# Time Complexity: O(n^3 + q), where q is no of queries, each one constant time
+# Space Complexity: O(n^2 + q)
