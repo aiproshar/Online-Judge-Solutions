@@ -7,28 +7,26 @@
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
 
-        depth = collections.defaultdict(lambda: -1)
-
         wordList = set(wordList)
+        if endWord not in wordList:
+            return 0
 
-
-        que = collections.deque()
-
-        que.append(beginWord)
-        depth[beginWord] = 1
+        depth = {beginWord: 1}
+        que = deque([beginWord])
         while que:
             current = que.popleft()
             for i in range(len(current)):
-                child = list(current)
-                for j in string.ascii_lowercase:
-                    child[i] = j
-                    child_str = "".join(child)
-                    if child_str in wordList and depth[child_str] == -1:
-                        depth[child_str] = depth[current] + 1
-                        if child_str == endWord:
-                            return depth[child_str]
-                        que.append(child_str)
-
+                current_list = list(current)
+                for char in string.ascii_lowercase:
+                    current_list[i] = char
+                    child = "".join(current_list)
+                    if child not in wordList or child in depth:
+                        continue
+                    depth[child] = depth[current] + 1
+                    if child == endWord:
+                        # early termination
+                        return depth[child]
+                    que.append(child)
         return 0
 
 # Time Complexity: We visit N nodes, for each nodes, we generate L*26 words  (Double for loop), so it should be L*26*M ? No, you are mistaken
