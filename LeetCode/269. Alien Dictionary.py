@@ -1,7 +1,7 @@
 """
 Hard Variant Topo Sort
 Used khans algorithm
-
+Also we need to validate the input is correct, the input can be contradictory
 """
 class Solution:
     def alienOrder(self, words: List[str]) -> str:
@@ -19,6 +19,7 @@ class Solution:
                         indegree[words[k + 1][i]] += 1
                     break
             else:
+                # First check, if one word is prefix of another, prefix must come before
                 if len(words[k]) > len(words[k + 1]):
                     return ""
 
@@ -32,6 +33,9 @@ class Solution:
                 if indegree[child] == 0:
                     que.append(child)
 
+        # second check, it's not a DAG
+        # Not DAG means input data contradictory to each other
+        # If there is a cycle we won't be able to pop all nodes
         if len(res) < len(indegree):
             return ""
         return "".join(res)
