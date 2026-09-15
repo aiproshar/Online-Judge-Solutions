@@ -13,6 +13,46 @@ class Solution:
     def rob(self, nums: List[int]) -> int:
         if len(nums) == 1:
             return nums[0]
+        @cache
+        def dp(i, money) -> int:
+            if i == 0:
+                return money[0]
+            if i == 1:
+                return max(money[0], money[1])
+            return max(money[i] + dp(i-2, money), dp(i-1, money))
+        first = tuple(nums[0:-1])
+        last = tuple(nums[1:])
+        return max(dp(len(first) - 1, first), dp(len(last) - 1, last))
+
+# Time Complexity: O(n) calls, each call due to tuple hashing, takes O(n^2), and this is a trap
+# When you use @cache you must think how much time it takes to hash the params, O(1) it should be
+
+
+#  Optimized wrapper
+# So we don't need to pass the list/tuple and cache it
+# Closure Pattern
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 1:
+            return nums[0]
+        def wrapper(money):
+            @cache
+            def dp(i) -> int:
+                if i == 0:
+                    return money[0]
+                if i == 1:
+                    return max(money[0], money[1])
+                return max(money[i] + dp(i-2), dp(i-1))
+            return dp(len(money) - 1)
+        return max(wrapper(nums[1:]), wrapper(nums[:-1]))
+
+# Time Complexity: O(n)
+# Space: O(n) recursion depth, call stack overflow risk
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 1:
+            return nums[0]
 
         def rob_partial(houses: list[int]) -> int:
             if len(houses) == 1:
