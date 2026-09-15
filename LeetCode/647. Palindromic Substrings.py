@@ -3,28 +3,44 @@
 # 99% same as : https://leetcode.com/problems/longest-palindromic-substring/description/
 class Solution:
     def countSubstrings(self, s: str) -> int:
-        n = len(s)
-        dp = [[None for _ in range(n)] for _ in range(n)]
-        
-        def isPalindrome(i,j):
-            if dp[i][j] != None:
-                return dp[i][j]
+
+        @cache
+        def is_palindrome(i, j):
             if i >= j:
-                dp[i][j] = True
-                return dp[i][j]
-            if s[i] == s[j] and isPalindrome(i + 1, j - 1):
-                dp[i][j] = True
-                return dp[i][j]
-            else:
-                dp[i][j] = False
-                return dp[i][j]
-        
-        count = 0
+                return True
+            if s[i] != s[j]:
+                return False
+            return is_palindrome(i + 1, j - 1)
 
-        for i in range(n):
-            for j in range(i, n):
-                if isPalindrome(i, j) is True:
-                    count +=1
-        return count
+        palindromes = 0
+        for i in range(len(s)):
+            for j in range(i, len(s)):
+                if is_palindrome(i, j):
+                    palindromes += 1
+        return palindromes
 
-# Time and space complexity: O(n^2)
+# Time Complexity: O(n^2)
+# Space Complexity: O(n^2) + O(n) recursion stack
+
+# Expand around center AKA bottom up
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        # Grows as long as its a palindrome
+        def grow(i, j) -> int:
+            total = 0
+            while i >= 0 and j < len(s) and s[i] == s[j]:
+                total += 1
+                i -= 1
+                j += 1
+            return total
+
+        palindromes = 0
+        for i in range(len(s)):
+            # Odd palindromes
+            palindromes += grow(i, i)
+            # Even Palindromes
+            palindromes += grow(i, i + 1)
+        return palindromes
+
+# Time: O(n^2)
+# Space: O(1)
