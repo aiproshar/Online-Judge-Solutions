@@ -1,28 +1,28 @@
-# Dumbfuck bruteforce
+# DP top down solution
 # We generate all possible substring and check each for palindrome
 # Keep track of largest length and substring
 
 class Solution:
-    def isPalindrome(self, s) -> bool:
-        return s == s[::-1]
-
     def longestPalindrome(self, s: str) -> str:
-        max_len = 0
-        max_str = ""
 
-        # N^2 loop, generate all possible substring (inclding single char)
+        @cache
+        def is_palindrome(i, j):
+            if i >= j:
+                return True
+            if s[i] != s[j]:
+                return False
+            return is_palindrome(i + 1, j - 1)
+
+        longest = s[0]
         for i in range(len(s)):
-            for j in range(i, len(s)):
-                #This is the edge case, its more likely related to python
-                # str[i:j] means before j, so if we really want upto j, we need to use j+1
-                if self.isPalindrome(s[i: j + 1]) is True:
-                    if j - i + 1 > max_len:
-                        max_len = max(max_len, j - i + 1)
-                        max_str = s[i:j + 1]
-        return max_str
+            for j in range(i + 1, len(s)):
+                if is_palindrome(i, j):
+                    if j - i + 1 > len(longest):
+                        longest = s[i:j + 1]
+        return longest
 
-# Time Complexity: O(n^3)
-# Space complexity: O(n)
+# Time Complexity: O(n^2)
+# Space complexity: O(n^2), with O(n) recursion depth
 
 
 
@@ -31,44 +31,26 @@ class Solution:
 # We pick every index and try to expand as far as we can
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        pal = [0,0]
-        def find(start, end):
-            nonlocal pal
-            if start < 0 or end >= len(s):
-                return
-            if s[start] == s[end]:
-                if end - start > pal[1] - pal[0]:
-                    pal = [start, end]
-                find(start-1, end + 1)
-        for i in range(len(s)):
-            find(i,i)
-            find(i, i+1)
-        return s[pal[0]:pal[1] + 1]
+        def expand(i, j) -> list[int]:
+            res = [0, 0]
+            while i >= 0 and j < len(s) and s[i] == s[j]:
+                res = [i, j]
+                i -= 1
+                j += 1
+            return res
 
-# Time: O(n^2)
-# Space: O(n) Recursion stack
+        longest = [0, 0]
 
-class Solution:
-    def longestPalindrome(self, s: str) -> str:
-        pal = [0, 0]
-
-        for i in range(len(s)):
-            start = i
-            end = i
-
-            while start >= 0 and end < len(s) and s[start] == s[end]:
-                if end - start > pal[1] - pal[0]:
-                    pal = [start, end]
-                start -= 1
-                end += 1
-            start = i
-            end = i + 1
-            while start >= 0 and end < len(s) and s[start] == s[end]:
-                if end - start > pal[1] - pal[0]:
-                    pal = [start, end]
-                start -= 1
-                end += 1
-        return s[pal[0]:pal[1] + 1]
+        for k in range(len(s)):
+            # Odd Palindrome
+            i, j = expand(k, k)
+            if (j - i + 1) > (longest[1] - longest[0] + 1):
+                longest = [i, j]
+            # Even Palindrome
+            i, j = expand(k, k + 1)
+            if (j - i + 1) > (longest[1] - longest[0] + 1):
+                longest = [i, j]
+        return s[longest[0]:longest[1] + 1]
 
 # Time: O(n^2)
 # Space: O(1)
