@@ -1,26 +1,28 @@
-# Recursive version with memoization
-# Our state: How much space left, return how many ways we can fill that space
-# Two Theoretical value, INF and None
 class Solution:
-    def coinChange(self, coins: List[int], amount: int) -> int:
+    def coinChange(self, coins: list[int], amount: int) -> int:
+
+        # 1. Objective Function: How many minimum needed to make x amount
         @cache
-        def dp(weight) -> int:
-            if weight == 0:
+        def dp(left) -> int:
+            # 2. base case, nothing left. We made up amount
+            if left == 0:
                 return 0
-            if weight < 0:
+            # 2. Impossible to made up, return inf
+            if left < 0:
                 return math.inf
             res = []
             for coin in coins:
-                res.append(dp(weight - coin))
+                res.append(dp(left - coin))
+            # 3. Recurrence Relation. Optimization. From all brancehs, take the smallest one
+            # Add one as we used one coin in current branch
             return min(res) + 1
 
-        mn = dp(amount)
-        if mn == math.inf:
-            return -1
-        return mn
+        # 4. Order of computation: Top Down recursive DFS
+        # 5. Where is answer ? Need to calculate this for amount, plug amount on objective function
+        return dp(amount) if dp(amount) != math.inf else -1
 
-# Time complexity: O(amount * coins)
-# Space complexity: O(amount + coins) //amount -> dp table, coin -> recursion depth
+# Time Complexity: O(amount) * S, where S = len(coins)
+# Space Complexity: Recursion Depth, amount / min(cost). Cache takes O(amount)
 
 
 
