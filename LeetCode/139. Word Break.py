@@ -12,7 +12,7 @@ class Solution:
                 return True
             for i in range(start, len(s)):
                 if s[start:i+1] in wordDict:
-                    if dp(i+1) is True:
+                    if dp(i + 1):
                         return True
             return False
         return dp(0)
