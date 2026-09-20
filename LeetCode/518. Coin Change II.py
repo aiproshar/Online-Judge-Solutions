@@ -2,21 +2,20 @@
 Top Down Recursive Version + Memoization
 '''
 
+
 class Solution:
-    def change(self, amount: int, coins: List[int]) -> int:
+    def change(self, amount: int, coins: list[int]) -> int:
 
         @cache
-        def dp(current, idx) -> int:
-            if current == amount:
+        def dp(remain, i) -> int:
+            if remain == 0:
                 return 1
-            if current > amount or idx >= len(coins):
+            if remain < 0 or i >= len(coins):
                 return 0
-            res = 0
-            res += dp(current + coins[idx], idx)
-            res += dp(current, idx + 1)
-            return res
 
-        return dp(0, 0)
+            return dp(remain - coins[i], i) + dp(remain, i + 1)
+
+        return dp(amount, 0)
 
 # Time Complexity: State Space: O(amount * n) where n = len(coins)
 # Space Complexity: O(m*n)
