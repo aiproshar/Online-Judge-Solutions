@@ -40,3 +40,47 @@ class Solution:
 
 # Time Complexity: nlogk, n = len(s) k= 26 so its O(n)
 # Space Complexity: O(26) ~ O(1), output O(n)
+
+
+
+
+
+'''
+Generic K slice Solution
+SO we can convert this to any stuffs
+'''
+
+
+class Solution:
+    def reorganizeString(self, s: str) -> str:
+
+        heap = [(-freq, char) for char, freq in Counter(s).items()]
+        heapq.heapify(heap)
+        # slice length
+        k = 2
+        current = []
+        # EOL marker, we considering the last run, where we can have any items
+        EOL = False
+        while heap:
+            temp = []
+            for _ in range(k):
+                if not heap:
+                    if EOL:
+                        return ""
+                    else:
+                        EOL = True
+                        break
+                count, char = heapq.heappop(heap)
+                current.append(char)
+                temp.append([count, char])
+
+            while temp:
+                count, char = temp.pop()
+                count += 1
+                if count < 0:
+                    heapq.heappush(heap, (count, char))
+
+        return "".join(current)
+
+# Time Complexity: O(n) for initial heapify + O(nlog26)
+# Space: O(n)
