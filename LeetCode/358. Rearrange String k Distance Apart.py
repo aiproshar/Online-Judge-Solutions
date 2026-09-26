@@ -2,6 +2,7 @@
 class Solution:
 
     def rearrangeString(self, s: str, k: int) -> str:
+        # Corner case, dont bother
         if k == 0:
             return s
         temp = Counter(s)
