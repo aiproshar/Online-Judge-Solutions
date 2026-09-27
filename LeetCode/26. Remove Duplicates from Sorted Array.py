@@ -3,13 +3,13 @@
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
 
-        res = [nums[0]]
-
+        u = 1
         for i in range(1, len(nums)):
-            if nums[i] == res[-1]:
+
+            if nums[i] == nums[i-1]:
                 continue
             else:
-                res.append(nums[i])
-        nums.clear()
-        for x in res:
-            nums.append(x)
+                nums[u] = nums[i]
+                u += 1
+        return u
+
