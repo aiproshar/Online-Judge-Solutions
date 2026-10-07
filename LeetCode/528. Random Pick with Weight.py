@@ -20,6 +20,31 @@ class Solution:
         random_idx = random.randint(0, len(self.lst) - 1)
         return self.lst[random_idx]
 
-# Your Solution object will be instantiated and called as such:
-# obj = Solution(w)
-# param_1 = obj.pickIndex()
+'''
+Time Complexity: O(1) for each pickIndex call, O(sum(w)) for init
+Space: O(sum(w))
+'''
+
+
+'''
+Optimal Method
+Binary Search
+'''
+
+class Solution:
+
+    def __init__(self, w: list[int]):
+        nums = []
+        nums.append(w[0])
+        for i in range(1, len(w)):
+            nums.append(nums[-1] + w[i])
+        self.nums = nums
+        self.mx = nums[-1]
+
+    def pickIndex(self) -> int:
+        # not from zero, as this is inclusive we start from 1
+        num = random.randint(1, self.mx)
+        return bisect_left(self.nums, num)
+
+# Time Complexity: O(len(w)) for init, log(len(w)) for each pickIndex Call
+# Space Complexity: O(len(w))
