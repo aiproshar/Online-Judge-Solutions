@@ -40,3 +40,42 @@ class Solution:
 # Time Complexity: O(n^2 * k)
 # Space Complexity: O(n^2 * k)
 # MLE due to @cache
+
+'''
+Actually this is a sliding window problem
+This is similar to : https://leetcode.com/problems/longest-repeating-character-replacement/description/
+
+Slide and Get global optimization
+'''
+class Solution:
+    def maxConsecutiveAnswers(self, answerKey: str, k: int) -> int:
+
+        # Maximize T, Maximize F
+        # Return the largest continious block
+
+        def sliding(char: str) -> int:
+            mismatch = 0
+            max_len = 0
+            left = right = 0
+            for right in range(len(answerKey)):
+
+                # slide right
+                if answerKey[right] != char:
+                    mismatch += 1
+
+                # invalid state, shrink
+                while mismatch > k:
+                    if answerKey[left] != char:
+                        mismatch -= 1
+                    left += 1
+                # valid state, calulate desired property (save global max/min whatever)
+                max_len = max(max_len, right - left + 1)
+            return max_len
+
+        return max(
+            sliding('T'),
+            sliding('F')
+        )
+
+# Time Complexity: O(n)
+# Space Complexity: O(1)
