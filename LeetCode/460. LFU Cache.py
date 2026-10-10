@@ -12,6 +12,7 @@ class LFUCache:
         self.cap = capacity
         # key -> freq, value. freq discard stale heap entries, freq only increases
         self.freq = {}
+        # timestamp as tiebreaker, as min heap, old accessed entries first during freq tie
         self.timestamp = 0
 
 
