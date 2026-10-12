@@ -23,3 +23,33 @@ class Solution:
             max_sum = max(max_sum, sum(nums) - min_sum)
 
         return max_sum
+
+# 99.9 % same, difference on edge handling perspective
+
+class Solution:
+    def maxSubarraySumCircular(self, nums: list[int]) -> int:
+
+        max_sum = nums[0]
+        current = nums[0]
+
+        for i in range(1, len(nums)):
+            # continue expand or start fresh, kadanes algorithm
+            current = max(current + nums[i], nums[i])
+            max_sum = max(max_sum, current)
+
+        # split
+        # find the minimum subarray, as the dip. Then we remove it from the total sum
+        # dip is the part we scoop out from middle
+        current = nums[0]
+        min_sum = nums[0]
+        for i in range(1, len(nums)):
+            # continue to expand or start fresh, kadanes algorithm but we wind minimum
+            current = min(current + nums[i], nums[i])
+            min_sum = min(min_sum, current)
+        # every element is negative and dip is the whole array here
+        # a different perspective
+        if max_sum < 0:
+            # dip is not the whole array, cause every element is negative. max_sum has the largest negative number
+            return max_sum
+
+        return max(max_sum, sum(nums) - min_sum)
