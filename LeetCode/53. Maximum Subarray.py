@@ -24,7 +24,7 @@ class Solution:
         current = nums[0]
 
         for i in range(1, len(nums)):
-            # continue expand or start fresh, kadanes algorithm
+            # continue to expand or start fresh, kaDanes algorithm
             current = max(current + nums[i], nums[i])
             max_sum = max(max_sum, current)
 
