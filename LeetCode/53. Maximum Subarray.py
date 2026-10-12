@@ -15,23 +15,20 @@ class Solution:
 # Time Complexity: O(n^2) TLE
 # Space COmplexity: O(1)
 
-
-
-# Algorith : Kadane's Algorith for O(n) Solution
-# /Brute Force : O(n^2) solution, Returns global optimum
-# Kind of DP + Greedy Behavior. Dp stores greedy's local optimum, greedy extends gradually to global space by extending local space
-# Back to back SWE explanation : https://www.youtube.com/watch?v=2MmGzdiKR9Y
+'''
+Raws Kadane, extend or start fresh !
+'''
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        max_sum = -math.inf
-        current = 0
-        for num in nums:
-            if current + num < num:
-                current = num
-            else:
-                current = current + num
+        max_sum = nums[0]
+        current = nums[0]
+
+        for i in range(1, len(nums)):
+            # continue expand or start fresh, kadanes algorithm
+            current = max(current + nums[i], nums[i])
             max_sum = max(max_sum, current)
+
         return max_sum
 
 # Time Complexity: O(n)
-# Space Complexity: O(1)
+# Space: O(1)
