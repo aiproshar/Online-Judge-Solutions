@@ -19,7 +19,8 @@ class Solution:
         return mx + 1
 
 
-# Time and Space Complexity: O(1)
+# Time Complexity: O(n)
+# Space Complexity: O(n)
 
 
 '''
@@ -35,6 +36,7 @@ class Solution:
         for i in range(len(nums)):
             while 0 < nums[i] <= n and nums[nums[i] - 1] != nums[i]:
                 # Corner Case: You must look at the value we just swap, that may sit in some places too
+                # 0 based index adjust corner case
                 j = nums[i] - 1
                 nums[i], nums[j] = nums[j], nums[i]
                 '''
@@ -48,5 +50,5 @@ class Solution:
 
         return nums[-1] + 1
 
-# Time Complexity: O(1)
-# Space Complexity: O(1)
+# Time Complexity: O(n)
+# Space Complexity: O(1) inplace modify
