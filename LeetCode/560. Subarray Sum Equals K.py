@@ -25,14 +25,20 @@ Optimal solution, prefix SUM with hashtable
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
 
-        idxs = defaultdict(int)
-        idxs[0] = 1
-        sum_ = 0
-        total = 0
-        for i in range(len(nums)):
-            sum_ += nums[i]
-            total += idxs[sum_ - k]
-            idxs[sum_] += 1
-        return total
+        prefix_sum = defaultdict(int)
+        # corner case: what if prefix includes all from zero position. Then its valid
+        # We assume the array ran past 0 (-1) index, and addition invariant (0)
+        prefix_sum[0] += 1
+        n = len(nums)
+        current = 0
+        count = 0
+        # inclusive prefix
+        for i in range(n):
+            current += nums[i]
+            target = current - k
+            count += prefix_sum[target]
+            prefix_sum[current] += 1
+        return count
+
 # Time Complexity: O(n)
-# Space Complexity: O(n)
+# Space Complexity: O(1)
