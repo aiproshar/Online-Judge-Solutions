@@ -1,50 +1,29 @@
-# Default Brute force
-# Tricky, one zero and no zero edge case handled
-# All rest are general case
+'''
+Non-inclusive prefix, suffix
+non-inclusive reduces complexity, removes the need for sentinels and other edge case handling
+non-inclusive means prefix[i] = nums[0] * nums[1]. .... nums[i-1] . Note nums[i] not included
+The problem forbids using division operator, non-inclusive also takes care of that
+Same for suffix
+'''
 class Solution:
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
-        product_total = 1
-        zero_count = 0
-        zero_idx = None
-        for idx, num in enumerate(nums):
-            if num != 0:
-                product_total = num * product_total
-            else:
-                zero_count += 1
-                zero_idx = idx
-        if zero_count > 1:
-            return [0 for _ in nums]
-        if zero_count == 1:
-            product_list = [0 for _ in nums]
-            product_list[zero_idx] = product_total
-            return product_list
-        return [product_total // num for num in nums]
-# Time complexity:  O(n)
-# Space complexity:  O(1)
+    def productExceptSelf(self, nums: list[int]) -> list[int]:
+        n = len(nums)
+        prefix = [0] * n
+        suffix = [0] * n
+        # Base Cases, prefix for start and suffix for last element imaginary extended array with invariant value (1)
+        prefix[0] = 1
+        suffix[-1] = 1
+        # non-inclusive
+        for i in range(1, n):
+            prefix[i] = prefix[i - 1] * nums[i - 1]
 
+        for i in range(n - 2, -1, -1):
+            suffix[i] = suffix[i + 1] * nums[i + 1]
 
-# Followup ! No division allowed
-# You need to use prefix /postfix sum/product strategy
-class Solution:
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        # Reduces down complexity
+        res = [prefix[i] * suffix[i] for i in range(n)]
 
-        prefix = [1] * len(nums)
-        suffix = [1] * len(nums)
-
-        prefix[0] = nums[0]
-        suffix[-1] = nums[-1]
-
-        for i in range(1, len(nums)):
-            prefix[i] = prefix[i - 1] * nums[i]
-
-        for i in range(len(nums) - 2, -1, -1):
-            suffix[i] = suffix[i + 1] * nums[i]
-
-        res = [None] * len(nums)
-        for i in range(1, len(nums) - 1):
-            res[i] = prefix[i - 1] * suffix[i + 1]
-        res[0] = suffix[1]
-        res[-1] = prefix[-2]
         return res
-# Time complexity:  O(n)
-# Space complexity:  O(n)
+
+# Time Complexity: O(n)
+# Space Complexity: O(n)
