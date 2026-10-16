@@ -28,4 +28,5 @@ class Solution:
         self.assemble(nums, {0, 1}, 1)
         return nums
 
-# Time and Space complexity: O(n)
+# Time  complexity: O(n)
+# Space: O(1)
