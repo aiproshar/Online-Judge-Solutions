@@ -47,6 +47,41 @@ class Solution:
 # Time complexity: O(n)
 # Space complexity: O(k) # at most k items in stack, we get rid of it
 
+'''
+Lazy heap based solution
+We push values in heap with index (to invalidate)
+Peek root and remove stale entries
+'''
+class Solution:
+    def maxSlidingWindow(self, nums: list[int], k: int) -> list[int]:
+        i = 0
+        n = len(nums)
+        res = []
+        heap = []
+        # lazy heap
+        for i in range(k):
+            heapq.heappush(heap, (-nums[i], i))
+        j = k - 1
+        i = 0
+        while j < n:
+            # remove root as long as entry is stale
+            while heap:
+                max_, max_idx = heap[0]
+                if max_idx < i:
+                    heapq.heappop(heap)
+                else:
+                    break
+            res.append(-heap[0][0])
+            i += 1
+            j += 1
+            if j >= n:
+                break
+            heapq.heappush(heap, (-nums[j], j))
 
+
+        return res
+
+# Time Complexity: O(nlogn)
+# Space Complexity: O(n)
 
 
