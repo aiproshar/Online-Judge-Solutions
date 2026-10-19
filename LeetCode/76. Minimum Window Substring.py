@@ -144,5 +144,47 @@ class Solution:
                 i += 1
         return min_sub if min_sub is not None else ""
 
+'''
+Solved this way while revisiting
+'''
+
+
+class Solution:
+    def _isPresent(self, s, t) -> bool:
+        for char, freq in t.items():
+            if s[char] < freq:
+                return False
+        return True
+
+    def minWindow(self, s: str, t: str) -> str:
+
+        freq_t = Counter(t)
+        freq_s = defaultdict(int)
+
+        if len(s) < len(t) or s == "" or t == "":
+            return ""
+
+        i = 0
+        j = 0
+        min_window = None
+
+        while j < len(s):
+            freq_s[s[j]] += 1
+            # bit reverse
+            # We can update global while in invalid state lol
+            while self._isPresent(freq_s, freq_t):
+                if min_window is None or j - i < min_window[1] - min_window[0]:
+                    min_window = [i, j]
+                freq_s[s[i]] -= 1
+                i += 1
+            # valid state but we dont care
+
+            # nothing here
+            j += 1
+        if min_window is None:
+            return ""
+        else:
+            return s[min_window[0]: min_window[1] + 1]
+
 
 
