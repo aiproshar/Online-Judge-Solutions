@@ -181,3 +181,96 @@ class LRUCache:
 # obj = LRUCache(capacity)
 # param_1 = obj.get(key)
 # obj.put(key,value)
+
+
+
+
+'''
+Modular and cleaner Solution, this one mimics ordered dict
+Instead of shoving all the linked list logic in the main methods, we implement helper methods
+Helper methods interface is very similar to ordered dict
+Key as identifier everywhere, not node
+'''
+
+
+class Node:
+    def __init__(self, key=None, prev=None, next=None):
+        self.key = key  # do find and delete hashmap entry
+        self.prev = prev
+        self.next = next
+
+
+class LRUCache:
+
+    def move_to_end(self, key) -> None:
+
+        node = self.data[key][1]
+        # update old neighbours
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+        # upate node pointers
+        node.prev = self.tail.prev
+        node.next = self.tail
+        # update new neighbours
+        self.tail.prev.next = node
+        self.tail.prev = node
+
+    def popfirst(self):
+        node = self.head.next
+        key = node.key
+
+        self.head.next = node.next
+        node.next.prev = self.head
+
+        # cleanup
+        del self.data[key]
+        del node
+
+    def append_to_end(self, key) -> Node:
+
+        node = Node(key=key)
+        node.prev = self.tail.prev
+        node.next = self.tail
+
+        # update new neighbours
+        self.tail.prev.next = node
+        self.tail.prev = node
+        return node
+
+    def __init__(self, capacity: int) -> None:
+
+        self.head = Node()
+        self.tail = Node()
+        # key -> (value, Node)
+        self.data = {}
+        self.cap = capacity
+
+        #
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key: int) -> int:
+        if key not in self.data:
+            return -1
+
+        self.move_to_end(key)
+        return self.data[key][0]
+
+    def put(self, key: int, value: int) -> None:
+
+        if key not in self.data:
+
+            node = self.append_to_end(key)
+            self.data[key] = (value, node)
+            if len(self.data) > self.cap:
+                self.popfirst()
+        else:
+            _, node = self.data[key]
+            self.data[key] = (value, node)
+            self.move_to_end(key)
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
