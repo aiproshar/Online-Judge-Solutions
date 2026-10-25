@@ -54,33 +54,40 @@ SO we can convert this to any stuffs
 class Solution:
     def reorganizeString(self, s: str) -> str:
 
-        heap = [(-freq, char) for char, freq in Counter(s).items()]
+        cnt = Counter(s)
+        heap = [(-freq, char) for char, freq in cnt.items()]
         heapq.heapify(heap)
-        # slice length
+        # slice size
         k = 2
-        current = []
-        # EOL marker, we considering the last run, where we can have any items
-        EOL = False
+        res = []  # a b
+        temp = deque()  #
         while heap:
-            temp = []
             for _ in range(k):
-                if not heap:
-                    if EOL:
-                        return ""
-                    else:
-                        EOL = True
-                        break
-                count, char = heapq.heappop(heap)
-                current.append(char)
-                temp.append([count, char])
+                if heap:
+                    freq, char = heapq.heappop(heap)
+                    temp.append((freq, char))
+                else:
+                    break
+
+            if len(temp) < k:
+                break
 
             while temp:
-                count, char = temp.pop()
-                count += 1
-                if count < 0:
-                    heapq.heappush(heap, (count, char))
+                freq, char = temp.popleft()
+                freq += 1
+                res.append(char)
+                if freq < 0:
+                    heapq.heappush(heap, (freq, char))
 
-        return "".join(current)
+        # last run, must be solo freq
+        while temp:
+            freq, char = temp.popleft()
+            freq += 1
+            res.append(char)
+            if freq != 0:
+                return ""
+
+        return "".join(res)
 
 # Time Complexity: O(n) for initial heapify + O(nlog26)
 # Space: O(n)
