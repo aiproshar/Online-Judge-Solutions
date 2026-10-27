@@ -28,17 +28,22 @@ We can do more optimization here, nums[i] + K can go out of bound, we setting dp
 That will guranteed what we do only O(n) operations
 '''
 class Solution:
-    def jump(self, nums: List[int]) -> int:
-
-        jump = defaultdict(lambda: math.inf)
-        jump[0] = 0
-        for i in range(len(nums)):
-            for j in reversed(range(i + 1, i + nums[i] + 1)):
-                if jump[i] + 1 < jump[j]:
-                    jump[j] = jump[i] + 1
+    def jump(self, nums: list[int]) -> int:
+        n = len(nums)
+        dp = [math.inf] * n
+        # dp[i] -> min jump to reach ith location
+        # base case
+        dp[0] = 0
+        for i in range(n):
+            # overreach corner case
+            reach = min(n - 1, i + nums[i])
+            while reach > i:
+                if dp[reach] > dp[i] + 1:
+                    dp[reach] = dp[i] + 1
+                    reach -= 1
                 else:
                     break
-        return jump[len(nums) - 1]
+        return dp[n-1]
 # Time Complexity: O(n+k). How ? We touching previously updated cells at most n times. Becase of early break
 # K is our avg jump length
 # Space: O(n)
