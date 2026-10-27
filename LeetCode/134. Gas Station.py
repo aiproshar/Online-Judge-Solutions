@@ -47,3 +47,27 @@ class Solution:
                 total = 0
                 start_idx = i + 1
         return start_idx
+
+'''
+Tried this again and was able to solve, was stuck for 10 minutes
+This is actually kadanes lol
+If current is negative we start from there
+'''
+class Solution:
+    def canCompleteCircuit(self, gas: list[int], cost: list[int]) -> int:
+
+        if sum(cost) > sum(gas):
+            return -1
+        n = len(gas)
+        gain = [gas[i] - cost[i] for i in range(n)]
+        idx = 0
+        current = 0
+        for i in range(n):
+            if gain[i] > current + gain[i]:
+                # reset
+                current = gain[i]
+                idx = i
+            else:
+                # extend
+                current += gain[i]
+        return idx
