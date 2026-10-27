@@ -44,8 +44,7 @@ class Solution:
                 else:
                     break
         return dp[n-1]
-# Time Complexity: O(n+k). How ? We touching previously updated cells at most n times. Becase of early break
-# K is our avg jump length
+# Time Complexity: O(n), not O(n*k). Each dp cell is written exactly once
 # Space: O(n)
 
 """
