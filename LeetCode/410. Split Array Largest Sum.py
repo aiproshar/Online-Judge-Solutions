@@ -115,3 +115,40 @@ class Solution:
 # Time Complexity: n*k states, running a loop of n each state. So O(n^2 * k)
 # Space: same as previous. O(nk) + K recursion depth
 # We can remove res array, amybe keep just the minimum. That also works
+
+
+
+'''
+Binary Search Based Solution
+Weird
+Same as Capacity to ship K packages in D days, line by line same
+'''
+
+
+class Solution:
+    def splitArray(self, nums: list[int], k: int) -> int:
+
+        def isValid(max_sum: int) -> bool:
+
+            current = 0
+            array_count = 1
+            for num in nums:
+                current += num
+                if current > max_sum:
+                    current = num
+                    array_count += 1
+            return array_count <= k
+
+        lo = max(nums)
+        hi = sum(nums) + 1
+
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if isValid(mid) is False:
+                lo = mid + 1
+            else:
+                hi = mid
+        return lo
+
+# Time Complexity: O(nlog(sum(nums))
+# Space Complexity: O(1)
