@@ -42,4 +42,29 @@ class Solution:
 # Time Complexity: O(K * nlogn)
 # Space Complexity: O(n)
 
+'''
+Optimized two stack solution
+Current stack and as soon as our capital increases we include new projects
+'''
+class Solution:
+    def findMaximizedCapital(self, k: int, w: int, profits: list[int], capital: list[int]) -> int:
 
+        projects = sorted(zip(capital, profits))
+
+        current_cap = w
+        heap = []
+        i = 0
+        while k > 0:
+            while i < len(projects) and projects[i][0] <= current_cap:
+                heapq.heappush(heap, (-projects[i][1]))
+                i += 1
+            if heap:
+                current_cap -= heapq.heappop(heap)
+                k -= 1
+            else:
+                break
+
+        return current_cap
+
+# Time Complexity: nlogn (sort) + nlogn (insert) + Klogn (pop)
+# Space Complexity: O(n)
